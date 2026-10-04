@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 · LLM y modo agéntico</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">04 · UNIDAD 5</span><h1>LLM y modo agéntico</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>LLM frente a agente <small>qué aporta cada uno en la administración del sistema</small></h2>
+    <svg viewBox="0 0 800 400" role="img" aria-label="Diagrama: LLM que predice texto frente a agente con herramientas, ciclo de pasos y entorno">
+      <defs>
+        <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+        <marker id="fg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#3E9B4F"/>
+        </marker>
+      </defs>
+      <style>
+        .tb{font:600 13px system-ui,sans-serif;fill:#fff;stroke:none}
+        .t{font:13px system-ui,sans-serif;fill:#151515;stroke:none}
+        .ts{font:11px system-ui,sans-serif;fill:#555;stroke:none}
+        .lw{font:11px system-ui,sans-serif;fill:#EE0000;stroke:none}
+        .lg{font:11px system-ui,sans-serif;fill:#3E9B4F;stroke:none}
+        .m{font:12px ui-monospace,Consolas,monospace;stroke:none}
+        .bx{stroke-width:2}
+        svg text{stroke:none}
+      </style>
+
+      <line x1="400" y1="16" x2="400" y2="388" stroke="#ddd" stroke-width="2" stroke-dasharray="6 5"/>
+
+      <text x="200" y="34" text-anchor="middle" class="t" font-weight="700">Solo LLM · propone texto</text>
+
+      <rect x="20" y="56" width="360" height="46" rx="8" fill="#f0f0f0" stroke="#ccc"/>
+      <text x="200" y="78" text-anchor="middle" class="ts">contexto: pregunta e historial</text>
+      <text x="200" y="94" text-anchor="middle" class="ts">entrenamiento: patrones del texto</text>
+
+      <line x1="200" y1="104" x2="200" y2="132" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="212" y="124" class="lw">contexto</text>
+
+      <rect x="60" y="134" width="280" height="70" rx="10" fill="#004080" class="bx" stroke="#002952"/>
+      <text x="200" y="162" text-anchor="middle" class="tb">LLM</text>
+      <text x="200" y="182" text-anchor="middle" class="tb" font-size="11">predice el siguiente texto</text>
+      <text x="200" y="196" text-anchor="middle" class="tb" font-size="11">token a token</text>
+
+      <line x1="200" y1="206" x2="200" y2="234" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="212" y="226" class="lw">texto generado</text>
+
+      <rect x="60" y="236" width="280" height="52" rx="8" fill="#EE0000" class="bx" stroke="#B30000"/>
+      <text x="200" y="258" text-anchor="middle" class="tb">Respuesta escrita</text>
+      <text x="200" y="278" text-anchor="middle" class="tb" font-size="11">no ejecuta nada en el sistema</text>
+
+      <rect x="20" y="310" width="360" height="66" rx="8" fill="#f0f0f0" stroke="#ddd"/>
+      <text x="200" y="334" text-anchor="middle" class="t" font-weight="700">Sin efecto en el sistema</text>
+      <text x="200" y="354" text-anchor="middle" class="ts">Describe el comando, pero no lo lanza.</text>
+      <text x="200" y="368" text-anchor="middle" class="ts">Copiar y pegar queda en manos del usuario.</text>
+
+      <text x="600" y="34" text-anchor="middle" class="t" font-weight="700">Modo agéntico · ejecuta y verifica</text>
+
+      <rect x="420" y="56" width="360" height="46" rx="8" fill="#f0f0f0" stroke="#ccc"/>
+      <text x="600" y="78" text-anchor="middle" class="ts">contexto: objetivo y estado real</text>
+      <text x="600" y="94" text-anchor="middle" class="ts">LLM como motor de decisión</text>
+
+      <line x1="560" y1="104" x2="560" y2="132" stroke="#3E9B4F" stroke-width="2" marker-end="url(#fg)"/>
+      <text x="572" y="124" class="lg">plan de pasos</text>
+
+      <rect x="470" y="134" width="260" height="70" rx="10" fill="#3E9B4F" class="bx" stroke="#2C6E39"/>
+      <text x="600" y="162" text-anchor="middle" class="tb">Agente</text>
+      <text x="600" y="182" text-anchor="middle" class="tb" font-size="11">LLM + herramientas</text>
+      <text x="600" y="196" text-anchor="middle" class="tb" font-size="11">+ ciclo de pasos</text>
+
+      <line x1="520" y1="206" x2="520" y2="234" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="532" y="226" class="lw">invoca</text>
+
+      <rect x="430" y="236" width="160" height="76" rx="8" fill="#151515" class="bx" stroke="#151515"/>
+      <text x="510" y="258" text-anchor="middle" class="tb">Herramientas</text>
+      <text x="510" y="280" text-anchor="middle" class="m" fill="#7CFC98">dnf</text>
+      <text x="510" y="298" text-anchor="middle" class="m" fill="#7CFC98">systemctl</text>
+
+      <rect x="620" y="236" width="160" height="76" rx="8" fill="#F0AB00" class="bx" stroke="#C08800"/>
+      <text x="700" y="258" text-anchor="middle" class="t" font-weight="700">Entorno</text>
+      <text x="700" y="280" text-anchor="middle" class="ts">shell y archivos</text>
+      <text x="700" y="298" text-anchor="middle" class="ts">salida real del comando</text>
+
+      <line x1="592" y1="274" x2="618" y2="274" stroke="#3E9B4F" stroke-width="2" marker-end="url(#fg)"/>
+      <path d="M700 314 L700 330 L600 330 L600 208" fill="none" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="612" y="326" class="lw">la salida real vuelve al LLM</text>
+
+      <rect x="420" y="344" width="360" height="44" rx="8" fill="#151515" class="bx" stroke="#151515"/>
+      <text x="600" y="363" text-anchor="middle" class="tb" font-size="12">Asistente de RHEL: aporta el eslabón de ejecución</text>
+      <text x="600" y="381" text-anchor="middle" class="tb" font-size="11">propone la orden y el usuario confirma</text>
+    </svg>
+    <p class="leyenda">Un LLM aislado no toca el sistema: el agente añade herramientas, entorno y ciclo de retroalimentación.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Qué significa y qué riesgo tiene</h2>
+    <table>
+      <tr><th style="width:24%">Concepto</th><th>Qué significa</th></tr>
+      <tr><td><strong>LLM</strong></td><td>Modelo entrenado que estima el texto más probable a partir del contexto recibido; su salida es texto.</td></tr>
+      <tr><td><strong>No ejecuta</strong></td><td>Sin herramientas, el modelo no lanza órdenes ni lee archivos: solo propone texto que el usuario copia.</td></tr>
+      <tr><td><strong>Herramientas</strong></td><td>Interfaces controladas que conectan el modelo con <code>dnf</code>, <code>systemctl</code> o la lectura de archivos.</td></tr>
+      <tr><td><strong>Modo agéntico</strong></td><td>Ciclo de pasos: proponer, ejecutar, leer el resultado real y volver a decidir con esa información.</td></tr>
+      <tr><td><strong>Asistente de RHEL</strong></td><td>Añade el contexto del sistema y la confirmación del usuario antes de ejecutar cada orden.</td></tr>
+      <tr><td><strong>Riesgo</strong></td><td>Verificar siempre la orden propuesta antes de confirmarla y no enviar datos sensibles del sistema a servicios externos.</td></tr>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Ejemplo con <code>dnf</code> <small>el asistente propone, el usuario confirma</small></h2>
+    <div class="chuleta"><span class="com"># 1. Objetivo del usuario: comprobar el estado del paquete vim</span>
+<span class="c">dnf info vim</span>                     <span class="com"># el asistente propone esta orden de solo lectura</span>
+<span class="com"># 2. El usuario revisa la orden y la confirma; la salida real vuelve al modelo</span>
+<span class="com"># 3. Solo entonces el asistente propone la orden de cambio</span>
+<span class="c">dnf install vim</span>                <span class="com"># requiere confirmación explícita antes de ejecutarse</span>
+<span class="com"># 4. Verificación posterior con una orden real del sistema</span>
+<span class="c">rpm -q vim</span>                     <span class="com"># consulta la versión instalada del paquete</span></div>
+  </section>
+</main>
+<footer>Material didáctico · RH124 Red Hat System Administration I · Uso didáctico</footer>
+</body></html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01 · Del código abierto a RHEL</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">01 · UNIDAD 1</span><h1>Del código abierto a RHEL</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>Flujo de izquierda a derecha <small>qué hereda cada proyecto del anterior</small></h2>
+    <svg viewBox="0 0 900 560" role="img" aria-label="Diagrama: codigo abierto, Linux generico, Fedora, CentOS Stream, RHEL y OpenShift">
+      <defs>
+        <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+        <marker id="fg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#3E9B4F"/>
+        </marker>
+      </defs>
+      <style>
+        .t{font:13px system-ui,sans-serif;fill:#151515;stroke:none}
+        .tb{font:600 13px system-ui,sans-serif;fill:#fff;stroke:none}
+        .ts{font:11px system-ui,sans-serif;fill:#555;stroke:none}
+        .lw{font:11px system-ui,sans-serif;fill:#EE0000;stroke:none}
+        .lg{font:11px system-ui,sans-serif;fill:#3E9B4F;stroke:none}
+        .bx{stroke-width:2}
+        svg text{stroke:none}
+      </style>
+
+      <rect x="4" y="126" width="140" height="220" rx="10" fill="#151515" class="bx" stroke="#151515"/>
+      <text x="74" y="152" text-anchor="middle" class="tb">Código abierto</text>
+      <image href="logos/Heckert_GNU_white.svg" x="16" y="162" width="60" height="60" aria-label="Logotipo oficial del proyecto GNU"/>
+      <rect x="80" y="162" width="52" height="60" rx="6" fill="#fff"/>
+      <image href="logos/OSI-logo.svg" x="84" y="166" width="44" height="52" aria-label="Logotipo oficial de la Open Source Initiative"/>
+      <text x="74" y="242" text-anchor="middle" class="tb" font-size="10">GNU · OSI · GPL</text>
+      <text x="74" y="262" text-anchor="middle" class="tb" font-size="11">Apache, MIT, BSD…</text>
+      <text x="74" y="282" text-anchor="middle" class="tb" font-size="11">núcleo Linux</text>
+      <text x="74" y="302" text-anchor="middle" class="tb" font-size="11">logotipos oficiales</text>
+      <text x="74" y="322" text-anchor="middle" class="tb" font-size="10" fill="#c8c8c8">GNU y OSI</text>
+
+      <line x1="146" y1="236" x2="222" y2="236" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <rect x="152" y="222" width="62" height="16" fill="#ffffff"/>
+      <text x="183" y="234" text-anchor="middle" class="lw">licencias</text>
+
+      <rect x="224" y="126" width="140" height="220" rx="10" fill="#004080" class="bx" stroke="#004080"/>
+      <text x="294" y="152" text-anchor="middle" class="tb">Linux genérico</text>
+      <text x="294" y="230" text-anchor="middle" class="tb" font-size="11">núcleo + utilidades</text>
+      <text x="294" y="252" text-anchor="middle" class="tb" font-size="11">sin marca de</text>
+      <text x="294" y="272" text-anchor="middle" class="tb" font-size="11">fabricante</text>
+
+      <line x1="366" y1="236" x2="448" y2="236" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <rect x="368" y="212" width="78" height="34" fill="#ffffff"/>
+      <text x="407" y="226" text-anchor="middle" class="lw">núcleo y</text>
+      <text x="407" y="240" text-anchor="middle" class="lw">herramientas</text>
+
+      <rect x="452" y="24" width="184" height="470" rx="10" fill="#f5f5f5" class="bx" stroke="#c8c8c8" stroke-dasharray="5 4"/>
+      <text x="544" y="50" text-anchor="middle" class="t" font-weight="700">Distribuciones</text>
+
+      <circle cx="544" cy="118" r="40" fill="#ffffff" stroke="#c8c8c8" stroke-width="2"/>
+      <image href="logos/Fedora_logo.svg" x="514" y="88" width="60" height="60" aria-label="Logotipo oficial de Fedora"/>
+      <text x="544" y="178" text-anchor="middle" class="t" font-weight="700">Fedora</text>
+      <text x="544" y="196" text-anchor="middle" class="ts">proyecto de Red Hat</text>
+      <text x="544" y="212" text-anchor="middle" class="ts">prueba tecnologías nuevas</text>
+      <path d="M544 224 L544 252" fill="none" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <rect x="485" y="230" width="118" height="16" fill="#f5f5f5"/>
+      <text x="544" y="242" text-anchor="middle" class="lw">paquetes validados</text>
+
+      <rect x="472" y="260" width="144" height="48" rx="6" fill="#fff" stroke="#c8c8c8"/>
+      <image href="logos/Centos-logo-2022.svg" x="482" y="268" width="124" height="32" aria-label="Logotipo oficial de CentOS"/>
+      <text x="544" y="330" text-anchor="middle" class="t" font-weight="700">CentOS Stream</text>
+      <text x="544" y="348" text-anchor="middle" class="ts">flujo continuo estable</text>
+      <text x="544" y="364" text-anchor="middle" class="ts">anticipa cada RHEL</text>
+
+      <path d="M544 376 L544 402" fill="none" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <rect x="480" y="382" width="128" height="16" fill="#f5f5f5"/>
+      <text x="544" y="394" text-anchor="middle" class="lw">fuentes reconstruidas</text>
+
+      <rect x="494" y="410" width="100" height="28" rx="4" fill="#EE0000" stroke="#B30000" stroke-width="2"/>
+      <text x="544" y="429" text-anchor="middle" class="tb">RHEL base</text>
+
+      <path d="M640 200 L726 200" fill="none" stroke="#3E9B4F" stroke-width="2" marker-end="url(#fg)"/>
+      <rect x="648" y="192" width="60" height="16" fill="#ffffff"/>
+      <text x="678" y="204" text-anchor="middle" class="lg">soporte</text>
+      <path d="M640 252 L726 252" fill="none" stroke="#3E9B4F" stroke-width="2" marker-end="url(#fg)"/>
+      <rect x="640" y="244" width="82" height="16" fill="#ffffff"/>
+      <text x="681" y="256" text-anchor="middle" class="lg">base validada</text>
+
+      <rect x="726" y="156" width="166" height="186" rx="10" fill="#EE0000" class="bx" stroke="#B30000"/>
+      <text x="809" y="184" text-anchor="middle" class="tb" font-size="15">RHEL</text>
+      <rect x="759" y="194" width="100" height="48" rx="6" fill="#fff"/>
+      <image href="logos/Red_Hat_logo.svg" x="769" y="198" width="80" height="40" aria-label="Logotipo oficial de Red Hat"/>
+      <text x="809" y="264" text-anchor="middle" class="tb" font-size="11">producto de suscripción</text>
+      <text x="809" y="282" text-anchor="middle" class="tb" font-size="11">para producción</text>
+      <text x="809" y="300" text-anchor="middle" class="tb" font-size="11">ciclos de vida</text>
+      <text x="809" y="318" text-anchor="middle" class="tb" font-size="11">de 10 años</text>
+
+      <path d="M809 344 L809 372" fill="none" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <rect x="735" y="350" width="148" height="16" fill="#ffffff"/>
+      <text x="809" y="362" text-anchor="middle" class="lw">imagen base certificada</text>
+
+      <rect x="726" y="378" width="166" height="116" rx="10" fill="#151515" class="bx" stroke="#151515"/>
+      <text x="809" y="402" text-anchor="middle" class="tb" font-size="12">OpenShift / Kubernetes</text>
+      <text x="809" y="428" text-anchor="middle" class="tb" font-size="11">orquestación</text>
+      <text x="809" y="448" text-anchor="middle" class="tb" font-size="11">sobre contenedores</text>
+      <text x="809" y="468" text-anchor="middle" class="tb" font-size="11">de nivel empresarial</text>
+    </svg>
+    <p class="leyenda">Flechas rojas: herencia de código. Flechas verdes: dependencia de soporte.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Qué aporta cada capa</h2>
+    <table>
+      <tr><th style="width:24%">Capa</th><th>Qué significa</th></tr>
+      <tr><td><strong>Código abierto</strong></td><td>Software distribuido con una licencia que permite usarlo, estudiarlo y redistribuirlo.</td></tr>
+      <tr><td><strong>Linux genérico</strong></td><td>Núcleo más utilidades de espacio de usuario, sin identidad de fabricante.</td></tr>
+      <tr><td><strong>Fedora</strong></td><td>Proyecto patrocinado por Red Hat: integra y prueba tecnologías antes de su llegada a RHEL.</td></tr>
+      <tr><td><strong>CentOS Stream</strong></td><td>Versión estable que sigue a Fedora de forma continua y anticipa cada publicación de RHEL.</td></tr>
+      <tr><td><strong>RHEL</strong></td><td>Distribución reconstruida con suscripción, ciclo de vida soportado y casos de soporte.</td></tr>
+      <tr><td><strong>OpenShift</strong></td><td>Plataforma de contenedores que usa RHEL como sistema base certificado.</td></tr>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Chuleta de comandos <small>versión y distribución instaladas</small></h2>
+    <div class="chuleta"><span class="c">cat /etc/redhat-release</span>        <span class="com"># versión de RHEL instalada</span>
+<span class="c">rpm -E %rhel</span>                   <span class="com"># versión principal del producto</span>
+<span class="c">hostnamectl</span>                     <span class="com"># sistema operativo y núcleo activos</span>
+<span class="c">uname -r</span>                        <span class="com"># versión del núcleo Linux en ejecución</span>
+<span class="c">dnf info redhat-release</span>        <span class="com"># paquete que declara la versión</span>
+<span class="c">dnf repolist</span>                   <span class="com"># repositorios habilitados</span></div>
+  </section>
+</main>
+<footer>Material didáctico · RH124 · Logotipos oficiales de GNU, OSI, Fedora, CentOS y Red Hat, de sus respectivos proyectos · Uso didáctico</footer>
+</body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>15 · Arranque y servicios con systemd</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">15 · UNIDAD 16</span><h1>Arranque y servicios con systemd</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>Secuencia de arranque <small>cada etapa entrega el control a la siguiente</small></h2>
+  <svg viewBox="0 0 800 250" role="img" aria-label="UEFI o BIOS, GRUB2, kernel con initramfs, systemd PID 1, default.target, basic.target, multi-user.target y graphical.target">
+    <defs>
+      <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+      </marker>
+    </defs>
+    <line x1="30" y1="150" x2="770" y2="150" stroke="#c8c8c8" stroke-width="2"/>
+    <text x="30" y="235" font-size="11" fill="#555">tiempo orientativo desde el encendido</text>
+
+    <rect x="20" y="100" width="115" height="60" rx="10" fill="#F0AB00" id="b-uefi"/>
+    <text x="77" y="125" font-size="13" fill="#151515" text-anchor="middle" font-weight="700">UEFI / BIOS</text>
+    <text x="77" y="143" font-size="10" fill="#151515" text-anchor="middle">~1 s</text>
+    <text x="77" y="72" font-size="11" fill="#555" text-anchor="middle">lee el MBR / EFI</text>
+
+    <rect x="165" y="100" width="115" height="60" rx="10" fill="#151515" id="b-grub"/>
+    <text x="222" y="125" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">GRUB2</text>
+    <text x="222" y="143" font-size="10" fill="#c8c8c8" text-anchor="middle">/boot/loader</text>
+    <text x="222" y="72" font-size="11" fill="#555" text-anchor="middle">~0,2 s · elige kernel</text>
+
+    <rect x="310" y="100" width="120" height="60" rx="10" fill="#151515" id="b-kern"/>
+    <text x="370" y="125" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Kernel</text>
+    <text x="370" y="143" font-size="10" fill="#c8c8c8" text-anchor="middle">+ initramfs</text>
+    <text x="370" y="72" font-size="11" fill="#555" text-anchor="middle">~1 s · monta /</text>
+
+    <rect x="460" y="100" width="120" height="60" rx="10" fill="#EE0000" id="b-sys"/>
+    <text x="520" y="125" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">systemd</text>
+    <text x="520" y="143" font-size="10" fill="#ffd9d9" text-anchor="middle">PID 1</text>
+    <text x="520" y="72" font-size="11" fill="#555" text-anchor="middle">~2 s · lee targets</text>
+
+    <rect x="610" y="100" width="170" height="60" rx="10" fill="#004080" id="b-tgt"/>
+    <text x="695" y="122" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">default.target</text>
+    <text x="695" y="140" font-size="11" fill="#9fc6e8" text-anchor="middle">basic.target</text>
+    <text x="695" y="155" font-size="11" fill="#9fc6e8" text-anchor="middle">multi-user.target</text>
+    <text x="695" y="72" font-size="11" fill="#555" text-anchor="middle">graphical.target</text>
+
+    <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+      <path d="M137 130 H163"/>
+      <path d="M282 130 H308"/>
+      <path d="M432 130 H458"/>
+      <path d="M582 130 H608"/>
+
+    </g>
+    <text x="150" y="196" font-size="10" font-weight="700" fill="#B30000" text-anchor="middle">carga</text>
+    <text x="295" y="196" font-size="10" font-weight="700" fill="#B30000" text-anchor="middle">ejecuta</text>
+    <text x="445" y="196" font-size="10" font-weight="700" fill="#B30000" text-anchor="middle">arranca</text>
+    <text x="595" y="196" font-size="10" font-weight="700" fill="#B30000" text-anchor="middle">isolate</text>
+  </svg>
+  <p class="leyenda"><code>systemctl isolate default.target</code> detiene los destinos que no necesita y activa únicamente los que ese destino requiere.</p>
+  <p><button class="btn" id="boot">Avanzar el arranque</button>
+  <span class="leyenda" id="boottxt" style="margin-left:10px">Pulse para encender: UEFI entrega a GRUB2.</span></p>
+</section>
+<section class="panel">
+  <h2>Dependencias entre unidades <small>Requires= obliga · Wants= Desea · After= ordena</small></h2>
+  <svg viewBox="0 0 800 170" role="img" aria-label="sshd.service requiere network.target, provista por NetworkManager.service; After establece el orden">
+    <defs>
+      <marker id="f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+      </marker>
+    </defs>
+    <rect x="30" y="55" width="180" height="62" rx="10" fill="#EE0000"/>
+    <text x="120" y="82" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">sshd.service</text>
+    <text x="120" y="102" font-size="11" fill="#ffd9d9" text-anchor="middle">puerto 22</text>
+
+    <rect x="310" y="55" width="180" height="62" rx="10" fill="#004080"/>
+    <text x="400" y="82" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">network.target</text>
+    <text x="400" y="102" font-size="11" fill="#9fc6e8" text-anchor="middle">interfaz configurada</text>
+
+    <rect x="590" y="55" width="180" height="62" rx="10" fill="#3E9B4F"/>
+    <text x="680" y="82" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">NetworkManager</text>
+    <text x="680" y="102" font-size="11" fill="#e2f3e6" text-anchor="middle">.service · eth0</text>
+
+    <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f2)">
+      <path d="M212 78 H306"/>
+      <path d="M492 78 H586"/>
+    </g>
+    <text x="259" y="46" font-size="11" font-weight="700" fill="#B30000" text-anchor="middle">Requires= After=</text>
+    <text x="539" y="46" font-size="11" font-weight="700" fill="#B30000" text-anchor="middle">Wants= Before=</text>
+    <text x="400" y="152" font-size="11" fill="#555" text-anchor="middle">Requires= detiene sshd si la dependencia falla; Wants= solo registra el fallo</text>
+  </svg>
+
+  <h2 style="margin-top:16px">Operaciones y su efecto exacto</h2>
+  <table>
+    <tr><th>Operación</th><th>Efecto inmediato</th><th>Efecto al reiniciar</th></tr>
+    <tr><td><code>systemctl start sshd</code></td><td>Arranca el servicio ahora</td><td>No arranca, salvo que esté habilitada</td></tr>
+    <tr><td><code>systemctl stop sshd</code></td><td>Detiene el servicio ahora</td><td>Arranca si estaba habilitada</td></tr>
+    <tr><td><code>systemctl enable sshd</code></td><td>No cambia el estado actual</td><td>Arranca automáticamente</td></tr>
+    <tr><td><code>systemctl disable sshd</code></td><td>No cambia el estado actual</td><td>No arranca automáticamente</td></tr>
+    <tr><td><code>systemctl restart sshd</code></td><td>stop seguido de start</td><td>Igual que habilitada o no</td></tr>
+  </table>
+
+  <h2 style="margin-top:16px">Comprobación <small>interruptor enabled / disabled</small></h2>
+  <p style="margin:0 0 10px;font-size:.9rem">Estado simulado de <code>sshd.service</code>: <b id="est">enabled · activo</b></p>
+  <button class="btn" id="sw">Cambiar a disabled</button>
+  <p id="frase" style="font-size:.9rem;margin:12px 0 0">Al reiniciar, systemd arrancará <b>sshd</b> automáticamente.</p>
+</section>
+
+<section class="panel">
+  <h2>Chuleta de comandos</h2>
+  <div class="chuleta"><span class="c">systemctl status sshd</span>                    <span class="com"># estado, PID y últimas líneas</span>
+<span class="c">systemctl is-enabled sshd</span>               <span class="com"># enabled, disabled, static, masked</span>
+<span class="c">systemctl cat sshd</span>                       <span class="com"># unidad y drop-ins aplicados</span>
+<span class="c">systemctl list-units --type=target</span>       <span class="com"># destinos activos</span>
+<span class="c">systemctl daemon-reload</span>                 <span class="com"># relee unidades tras editar un .service</span>
+<span class="c">systemctl set-default graphical.target</span>  <span class="com"># destino de arranque por defecto</span>
+<span class="c">journalctl -u sshd -b --no-pager</span>        <span class="com"># registro de sshd de este arranque</span>
+<span class="c">systemd-analyze blame</span>                  <span class="com"># unidades activadas más lentas</span></div>
+</section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+  (function(){
+    var ids=["b-uefi","b-grub","b-kern","b-sys","b-tgt"];
+    var txt=["UEFI: lee el disco y entrega a GRUB2.","GRUB2: elige el kernel en /boot/loader.","Kernel: monta / con ayuda de initramfs.","systemd PID 1: lee los targets.","default.target: levanta basic, multi-user y graphical."];
+    var k=-1,n=ids.length;
+    function luz(){for(var j=0;j<n;j++){document.getElementById(ids[j]).setAttribute("opacity",k<0||j===k?"1":"0.35");}document.getElementById("boottxt").textContent=k<0?"Pulse para encender: UEFI entrega a GRUB2.":"Etapa "+(k+1)+" de 5: "+txt[k];}
+    document.getElementById("boot").addEventListener("click",function(){k=(k+1)%n;luz();});
+    luz();
+  })();
+  document.getElementById('sw').addEventListener('click',function(){
+    var est=document.getElementById('est'),fr=document.getElementById('frase'),b=this;
+    if(est.dataset.on==='1'){
+      est.dataset.on='0';est.textContent='disabled · activo';
+      fr.innerHTML='Al reiniciar, systemd <b>no</b> arrancará sshd automáticamente.';
+      b.textContent='Cambiar a enabled';
+    }else{
+      est.dataset.on='1';est.textContent='enabled · activo';
+      fr.innerHTML='Al reiniciar, systemd arrancará <b>sshd</b> automáticamente.';
+      b.textContent='Cambiar a disabled';
+    }
+  });
+</script></body></html>

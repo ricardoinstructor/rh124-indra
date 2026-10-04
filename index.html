@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RH124 · Red Hat System Administration I</title>
+<style>
+:root{--rojo:#EE0000;--tinta:#151515;--gris:#f5f5f5}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta)}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1280px;margin:auto;display:flex;gap:16px;align-items:center;padding:18px 20px;flex-wrap:wrap}
+.logo{background:#fff;border-radius:10px;padding:6px 10px;display:flex;align-items:center}
+.logo img{height:44px;width:auto;display:block}
+h1{font-size:1.6rem;margin:0;letter-spacing:.02em}
+main{max-width:1280px;margin:22px auto;padding:0 20px 40px;display:grid;gap:10px;grid-template-columns:1fr 1fr 1fr}
+@media(max-width:1000px){main{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){main{grid-template-columns:1fr}}
+a.item{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid #ddd;border-left:5px solid var(--rojo);border-radius:10px;padding:12px 16px;text-decoration:none;color:inherit;transition:.15s}
+a.item:hover{transform:translateX(4px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.ico{font-size:26px;text-align:center}
+.n{font-size:.72rem;font-weight:800;letter-spacing:.06em;background:var(--tinta);color:#fff;border-radius:20px;padding:3px 9px;justify-self:start}
+.t{font-size:1rem;font-weight:700;display:block;margin:2px 0}
+.d{font-size:.86rem;color:#555}
+.u{font-size:.74rem;color:#888;text-align:right}
+footer{background:var(--tinta);color:#bbb;text-align:center;padding:16px;font-size:.82rem}
+</style>
+</head>
+<body>
+<header><div class="bar"><div class="logo"><img src="logos/Red_Hat_logo.svg" alt="Logotipo oficial de Red Hat"></div><div><h1>RH124</h1></div></div></header>
+<main id="lista"></main>
+<footer>Material didáctico · RH124 Red Hat System Administration I · Logotipos de Red Hat, Fedora, CentOS, GNU y OSI, de sus respectivos proyectos · Uso didáctico</footer>
+<script>
+const apps=[
+["01","🌱","Del código abierto a RHEL","Unidad 1 · Opensource, Fedora, CentOS, RHEL","01-distribuciones.html"],
+["02","⌨️","Anatomía de una orden","Unidad 2 · Prompt, comando, opciones, argumentos","02-anatomia-orden.html"],
+["03","📄","Suscripción, repos y Insights","Unidad 4 · subscription-manager, RHC, Insights","03-suscripcion.html"],
+["04","🤖","LLM y modo agéntico","Unidad 5 · Qué es un LLM y cómo ayuda en administración","04-llm-agente.html"],
+["05","🗂️","Jerarquía FHS y tipos de archivo","Unidad 6 · /etc /var /home /tmp y archivos regulares, enlaces, dispositivos","05-fhs-tipos.html"],
+["06","🔗","Duplicar sin copiar: enlaces duros y simbólicos","Unidad 7 · inodos, enlace duro y enlace simbólico","06-enlaces.html"],
+["07","💧","Los tres descriptores y las redirecciones","Unidad 9 · stdin, stdout, stderr y > >> < | 2>","07-redirecciones.html"],
+["08","👥","Usuarios, grupos y sus bases de datos","Unidad 10 · /etc/passwd, shadow, group, gshadow","08-usuarios.html"],
+["09","🎫","su frente a sudo","Unidad 10 · Cambio de usuario y elevación controlada","09-su-sudo.html"],
+["10","🔢","Calculadora de permisos","Unidad 11 · Simbólico, octal, rwx y bits especiales","10-permisos.html"],
+["11","📦","Paquete, dependencia y repositorio","Unidad 12 · rpm y dnf","11-rpm-dnf.html"],
+["12","🧊","Flatpak frente a contenedores","Unidad 13 · Aislamiento de aplicaciones","12-flatpak-container.html"],
+["13","🧱","Del disco al archivo que abre el usuario","Unidad 14 · Dispositivo de bloques, sistema de archivos, montaje, FHS","13-almacenamiento.html"],
+["14","⚡","Procesos y señales","Unidad 15 · PID, ps, top, kill, nice","14-procesos.html"],
+["15","🔌","Arranque y servicios con systemd","Unidad 16 · PID 1, targets y unidades de servicio","15-systemd.html"],
+["16","🧬","Modelo TCP/IP y OSI","Unidades 17-18 · Capas, IP, puertos y direcciones","17-red-osi.html"],
+["17","🔑","Flujo de conexión SSH","Unidad 19 · Handshake, claves y contraseñas","18-ssh.html"]
+];
+lista.innerHTML=apps.map(a=>`<a class="item" href="${a[4]}"><div class="ico">${a[1]}</div><div><span class="n">${a[0]}</span><span class="t">${a[2]}</span><span class="d">${a[3]}</span></div><div class="u">Abrir →</div></a>`).join('');
+</script>
+</body></html>

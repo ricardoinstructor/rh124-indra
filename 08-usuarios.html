@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>08 · Usuarios, grupos e identidad</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+.salida{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.85rem;min-height:44px}
+select{font:inherit;padding:8px 10px;border:1px solid #bbb;border-radius:8px;background:#fff}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">08 · UNIDAD 10</span><h1>Usuarios, grupos y sus bases de datos</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>Un intento de acceso consulta tres ficheros <small>/etc/passwd · /etc/shadow · /etc/group</small></h2>
+    <svg viewBox="0 0 800 566" role="img" aria-label="Flujo de decisión de acceso con las tablas passwd, shadow y group hasta el permiso del inodo">
+      <defs>
+        <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+        <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#3E9B4F"/>
+        </marker>
+        <marker id="k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#555"/>
+        </marker>
+      </defs>
+
+      <rect x="250" y="16" width="300" height="48" rx="10" fill="#EE0000"/>
+      <text x="400" y="37" font-size="14" text-anchor="middle" fill="#fff" font-weight="700">Intento de acceso</text>
+      <text x="400" y="55" font-size="11" text-anchor="middle" fill="#ffd9d9">leer /etc/shadow · ejecutar sudo</text>
+      <path d="M400 64 V88" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="412" y="82" font-size="10" font-weight="700" fill="#B30000">consulta</text>
+
+      <g id="c-passwd">
+      <rect x="20" y="92" width="245" height="150" rx="8" fill="#fff" stroke="#c8c8c8"/>
+      <rect x="20" y="92" width="245" height="24" rx="8" fill="#151515"/>
+      <rect x="20" y="108" width="245" height="8" fill="#151515"/>
+      <text x="142" y="109" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">/etc/passwd</text>
+      <rect x="20" y="116" width="245" height="24" fill="#f0f0f0"/>
+      <text x="51" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">nombre</text>
+      <text x="111" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">UID</text>
+      <text x="171" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">GID</text>
+      <text x="233" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">shell</text>
+      <path d="M20 140 H265" stroke="#c8c8c8"/>
+      <path d="M80 116 V242 M140 116 V242 M200 116 V242" stroke="#e4e4e4"/>
+      <text x="51" y="162" font-size="10" text-anchor="middle" fill="#151515">root</text>
+      <text x="111" y="162" font-size="10" text-anchor="middle" fill="#151515">0</text>
+      <text x="171" y="162" font-size="10" text-anchor="middle" fill="#151515">0</text>
+      <text x="233" y="162" font-size="10" text-anchor="middle" fill="#151515">/bin/bash</text>
+      <path d="M20 176 H265" stroke="#eee"/>
+      <text x="51" y="196" font-size="10" text-anchor="middle" fill="#004080">student</text>
+      <text x="111" y="196" font-size="10" text-anchor="middle" fill="#004080">1000</text>
+      <text x="171" y="196" font-size="10" text-anchor="middle" fill="#004080">1000</text>
+      <text x="233" y="196" font-size="10" text-anchor="middle" fill="#004080">/bin/bash</text>
+      <path d="M20 210 H265" stroke="#eee"/>
+      <text x="142" y="230" font-size="10" text-anchor="middle" fill="#666">directorio de inicio · GID del grupo</text>
+      </g>
+      <g id="c-shadow">
+
+      <rect x="278" y="92" width="245" height="150" rx="8" fill="#fff" stroke="#c8c8c8"/>
+      <rect x="278" y="92" width="245" height="24" rx="8" fill="#004080"/>
+      <rect x="278" y="108" width="245" height="8" fill="#004080"/>
+      <text x="400" y="109" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">/etc/shadow</text>
+      <rect x="278" y="116" width="245" height="24" fill="#f0f0f0"/>
+      <text x="340" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">usuario</text>
+      <text x="470" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">hash</text>
+      <path d="M278 140 H523" stroke="#c8c8c8"/>
+      <path d="M400 116 V242" stroke="#e4e4e4"/>
+      <text x="330" y="162" font-size="10" text-anchor="middle" fill="#004080">root</text>
+      <text x="470" y="162" font-size="10" text-anchor="middle" fill="#151515">$6$…</text>
+      <path d="M278 176 H523" stroke="#eee"/>
+      <text x="330" y="196" font-size="10" text-anchor="middle" fill="#004080">student</text>
+      <text x="470" y="196" font-size="10" text-anchor="middle" fill="#151515">$6$…</text>
+      <path d="M278 210 H523" stroke="#eee"/>
+      <text x="400" y="230" font-size="10" text-anchor="middle" fill="#666">solo root escribe (modo 640)</text>
+      </g>
+      <g id="c-group">
+
+      <rect x="536" y="92" width="245" height="150" rx="8" fill="#fff" stroke="#c8c8c8"/>
+      <rect x="536" y="92" width="245" height="24" rx="8" fill="#F0AB00"/>
+      <rect x="536" y="108" width="245" height="8" fill="#F0AB00"/>
+      <text x="658" y="109" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">/etc/group</text>
+      <rect x="536" y="116" width="245" height="24" fill="#f0f0f0"/>
+      <text x="597" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">grupo</text>
+      <text x="658" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">GID</text>
+      <text x="730" y="132" font-size="10" text-anchor="middle" fill="#555" font-weight="700">miembros</text>
+      <path d="M536 140 H781" stroke="#c8c8c8"/>
+      <path d="M626 116 V242 M690 116 V242" stroke="#e4e4e4"/>
+      <text x="590" y="162" font-size="10" text-anchor="middle" fill="#151515">wheel</text>
+      <text x="658" y="162" font-size="10" text-anchor="middle" fill="#151515">10</text>
+      <text x="730" y="162" font-size="10" text-anchor="middle" fill="#151515">root, student</text>
+      <path d="M536 176 H781" stroke="#eee"/>
+      <text x="590" y="196" font-size="10" text-anchor="middle" fill="#151515">student</text>
+      <text x="658" y="196" font-size="10" text-anchor="middle" fill="#151515">1000</text>
+      <text x="730" y="196" font-size="10" text-anchor="middle" fill="#555">(sin miembros)</text>
+      <path d="M536 210 H781" stroke="#eee"/>
+      <text x="658" y="230" font-size="10" text-anchor="middle" fill="#666">grupos suplementarios del usuario</text>
+      </g>
+      <g id="c-inodo">
+
+      <path d="M142 242 V286" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="152" y="270" font-size="10" font-weight="700" fill="#B30000">existe el usuario</text>
+      <path d="M400 242 V286" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="410" y="270" font-size="10" font-weight="700" fill="#B30000">contraseña válida</text>
+      <path d="M658 242 V286" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="668" y="270" font-size="10" font-weight="700" fill="#B30000">grupo con permiso</text>
+
+      <polygon points="400,290 560,340 400,390 240,340" fill="#151515"/>
+      <text x="400" y="334" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">¿Permiso del inodo?</text>
+      <text x="400" y="352" font-size="11" text-anchor="middle" fill="#c8c8c8">rwx de dueña, grupo u otros</text>
+      <text x="245" y="316" font-size="10" font-weight="700" fill="#B30000">no → denegado</text>
+
+      <path d="M400 390 V426" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="412" y="414" font-size="10" font-weight="700" fill="#B30000">sí</text>
+
+      <path d="M280 430 H520" stroke="#555" stroke-width="2" fill="none"/>
+      <path d="M280 430 L265 432" stroke="#3E9B4F" stroke-width="2" fill="none" marker-end="url(#g)"/>
+      <path d="M520 430 L535 432" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="210" y="424" font-size="10" fill="#1F7A33" text-anchor="middle" font-weight="700">concedido</text>
+      <text x="592" y="424" font-size="10" fill="#B30000" text-anchor="middle" font-weight="700">denegado</text>
+
+      <rect x="150" y="436" width="230" height="52" rx="10" fill="#3E9B4F"/>
+      <text x="265" y="458" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">Acceso concedido</text>
+      <text x="265" y="476" font-size="11" text-anchor="middle" fill="#dff3e4">el inodo permite la operación</text>
+      <rect x="420" y="436" width="230" height="52" rx="10" fill="#EE0000"/>
+      <text x="535" y="458" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">Acceso denegado</text>
+      <text x="535" y="476" font-size="11" text-anchor="middle" fill="#ffd9d9">el inodo no permite la operación</text>
+
+      <text x="400" y="518" font-size="11" text-anchor="middle" fill="#555">root (UID 0) omite la comprobación del inodo.</text>
+      <text x="400" y="538" font-size="11" text-anchor="middle" fill="#555">El grupo decide por el GID; el resto, por la clase otros.</text>
+      </g>
+    </svg>
+    <p><button class="btn" id="paso">Comprobar acceso por etapas</button>
+    <span class="leyenda" id="etapa" style="margin-left:10px">Etapa: pendiente.</span></p>
+    <p class="leyenda">Lectura de arriba abajo: identidad en <code>/etc/passwd</code>, secreto en <code>/etc/shadow</code>, pertenencia en <code>/etc/group</code>. El permiso del inodo es la decisión final.</p>
+  </section>
+<section class="panel">
+    <h2>Qué almacena cada fichero</h2>
+    <table>
+      <tr><th style="width:150px">Fichero</th><th>Contenido</th><th>Permisos</th></tr>
+      <tr><td><code>/etc/passwd</code></td><td>Nombre, UID, GID principal, shell y directorio de inicio. Lectura pública.</td><td><code>644</code></td></tr>
+      <tr><td><code>/etc/shadow</code></td><td>Hash de la contraseña, fecha del último cambio y caducidad. Lectura de root.</td><td><code>600</code></td></tr>
+      <tr><td><code>/etc/group</code></td><td>Nombre del grupo, GID y la lista de miembros suplementarios.</td><td><code>644</code></td></tr>
+      <tr><td><code>/etc/gshadow</code></td><td>Contraseña del grupo y administradores de ese grupo.</td><td><code>640</code></td></tr>
+    </table>
+    <p class="leyenda">Usuario que se evalúa</p>
+    <p><label for="sel">Usuario: </label>
+      <select id="sel">
+        <option value="root">root</option>
+        <option value="student" selected>student</option>
+        <option value="ansible">ansible</option>
+      </select></p>
+    <p class="salida" id="salida"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Chuleta de comandos</h2>
+    <div class="chuleta"><span class="c">id student</span>            <span class="com"># UID, GID y todos los grupos</span>
+<span class="c">groups student</span>        <span class="com"># solo grupos suplementarios</span>
+<span class="c">getent passwd student</span>  <span class="com"># busca en passwd y en NSS</span>
+<span class="c">getent group wheel</span>     <span class="com"># miembros del grupo wheel</span>
+<span class="c">ls -l /etc/passwd</span>      <span class="com"># propietario y modo del fichero</span>
+<span class="c">passwd -S student</span>     <span class="com"># estado: P, L o NP</span></div>
+  </section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+(function(){
+  var orden=["c-passwd","c-shadow","c-group","c-inodo"];
+  var txt=["Etapa 1 de 4: /etc/passwd, existe el usuario, UID y GID principal.","Etapa 2 de 4: /etc/shadow, la clave es valida y solo root la lee.","Etapa 3 de 4: /etc/group, el usuario pertenece al grupo con permiso.","Etapa 4 de 4: permiso del inodo, rwx de duena, grupo u otros."];
+  var k=-1;
+  function resalta(){for(var j=0;j<orden.length;j++){document.getElementById(orden[j]).setAttribute("opacity",j===k?"1":"0.35");}document.getElementById("etapa").textContent=k<0?"Etapa: pendiente.":txt[k];}
+  document.getElementById("paso").addEventListener("click",function(){k=(k+1)%4;resalta();});
+  resalta();
+})();
+document.getElementById('sel').addEventListener('change',function(){
+  var d={
+    root:'root: /etc/passwd UID 0 · no se consulta shadow · root ignora el inodo → acceso concedido.',
+    student:'student: passwd OK (UID 1000) · shadow OK · /etc/group: student(1000) y wheel(10), sin permiso sobre /etc/shadow → denegado.',
+    ansible:'ansible: passwd OK (UID 1001) · shadow OK · /etc/group: solo ansible(1001), sin permiso sobre /etc/shadow → denegado.'
+  };
+  document.getElementById('salida').textContent=d[this.value];
+});
+document.getElementById('sel').dispatchEvent(new Event('change'));
+</script></body></html>

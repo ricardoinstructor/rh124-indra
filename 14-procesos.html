@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>14 · Procesos y señales</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">14 · UNIDAD 15</span><h1>Gestión de procesos y señales</h1></div></div></header>
+<main>
+
+<section class="panel">
+  <h2>Ciclo y señales del proceso <small>el shell crea el hijo; kill -TERM pide, kill -KILL impone</small></h2>
+  <svg viewBox="0 0 800 340" role="img" aria-label="Del shell al hijo y senales TERM frente a KILL">
+    <defs>
+      <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+      </marker>
+    </defs>
+    <g id="p-shell">
+    <rect x="20" y="30" width="170" height="80" rx="10" fill="#151515"/>
+    <text x="105" y="58" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Shell</text>
+    <text x="105" y="78" font-size="11" fill="#c8c8c8" text-anchor="middle">PPID 2480, fork + exec</text>
+    <text x="105" y="94" font-size="10" fill="#8a8a8a" text-anchor="middle">queda a la espera</text>
+    </g>
+    <g id="p-hijo">
+    <rect x="250" y="30" width="220" height="80" rx="10" fill="#004080"/>
+    <text x="360" y="58" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Hijo, PID 2481</text>
+    <text x="360" y="78" font-size="11" fill="#9fc6e8" text-anchor="middle">En ejecucion, estado R</text>
+    <text x="360" y="94" font-size="10" fill="#9fc6e8" text-anchor="middle">imagen del programa en memoria</text>
+    </g>
+    <g id="p-fin">
+    <rect x="530" y="30" width="250" height="80" rx="10" fill="#3E9B4F"/>
+    <text x="655" y="58" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Fin, exit 0</text>
+    <text x="655" y="78" font-size="11" fill="#fff" text-anchor="middle">el shell recupera el codigo</text>
+    <text x="655" y="94" font-size="10" fill="#dff3e4" text-anchor="middle">echo $? muestra el resultado</text>
+    </g>
+    <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+      <path d="M192 70 H248"/>
+      <path d="M472 70 H528"/>
+    </g>
+    <text x="220" y="60" font-size="10" font-weight="700" fill="#B30000" text-anchor="middle">crea</text>
+    <text x="500" y="60" font-size="10" font-weight="700" fill="#B30000" text-anchor="middle">espera</text>
+    <g id="p-term">
+    <rect x="20" y="150" width="370" height="80" rx="10" fill="#F0AB00"/>
+    <text x="205" y="178" font-size="13" fill="#151515" text-anchor="middle" font-weight="700">SIGTERM, 15</text>
+    <text x="205" y="198" font-size="11" fill="#151515" text-anchor="middle">cierre educado: kill -TERM 2481</text>
+    <text x="205" y="214" font-size="10" fill="#555" text-anchor="middle">el proceso libera y termina</text>
+    </g>
+    <g id="p-kill">
+    <rect x="410" y="150" width="370" height="80" rx="10" fill="#EE0000"/>
+    <text x="595" y="178" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">SIGKILL, 9</text>
+    <text x="595" y="198" font-size="11" fill="#fff" text-anchor="middle">cierre inmediato: kill -KILL 2481</text>
+    <text x="595" y="214" font-size="10" fill="#ffd9d9" text-anchor="middle">no se ignora ni se captura</text>
+    </g>
+    <g id="p-hup">
+    <rect x="20" y="246" width="760" height="60" rx="10" fill="#f7f7f7" stroke="#c8c8c8"/>
+    <text x="400" y="268" font-size="12" fill="#151515" text-anchor="middle" font-weight="700">SIGHUP, 1: kill -HUP recarga la configuracion sin detener el servicio</text>
+    <text x="400" y="290" font-size="11" fill="#555" text-anchor="middle" id="txtProc">Pulse el boton para comparar el cierre educado con el inmediato.</text>
+    </g>
+  </svg>
+  <p><button class="btn" id="btn-proc">TERM frente a KILL</button></p>
+
+</section>
+
+<section class="panel">
+  <h2>Órdenes de consulta y control</h2>
+  <table>
+    <tr><th>Orden</th><th>Qué hace</th></tr>
+    <tr><td><code>ps -ef</code></td><td>Lista todos los procesos con PID, PPID y línea de órdenes</td></tr>
+    <tr><td><code>ps -p 2481 -o pid,ppid,stat,cmd</code></td><td>Muestra PID, padre, estado y orden de un proceso concreto</td></tr>
+    <tr><td><code>top</code></td><td>Monitor en tiempo real; la tecla <code>q</code> lo cierra</td></tr>
+    <tr><td><code>jobs</code></td><td>Procesos en segundo plano y suspendidos de la sesión actual</td></tr>
+    <tr><td><code>kill -TERM 2481</code></td><td>Pide el cierre educado; el proceso puede atenderlo y liberar recursos</td></tr>
+    <tr><td><code>kill -9 2481</code></td><td>Termina de inmediato; la señal no se puede ignorar</td></tr>
+    <tr><td><code>nohup comando &amp;</code></td><td>Ejecuta en segundo plano aunque la terminal se cierre</td></tr>
+    <tr><td><code>nice -n 10 comando</code></td><td>Lanza con prioridad de CPU reducida; <code>renice</code> la cambia después</td></tr>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Chuleta de comandos</h2>
+  <div class="chuleta"><span class="c">ps -ef</span>                                   <span class="com"># todos los procesos</span>
+<span class="c">ps -p 2481 -o pid,ppid,stat,cmd</span>                <span class="com"># detalle de un proceso</span>
+<span class="c">ps --ppid 2480</span>                             <span class="com"># hijos de un proceso</span>
+<span class="c">top</span>                                        <span class="com"># monitor en vivo · tecla q para salir</span>
+<span class="c">jobs</span>                                       <span class="com"># tareas de la sesión actual</span>
+<span class="c">kill -TERM 2481</span>                            <span class="com"># cierre educado</span>
+<span class="c">kill -9 2481</span>                               <span class="com"># cierre inmediato</span>
+<span class="c">kill -HUP $(pidof sshd)</span>                    <span class="com"># recarga la configuración</span>
+<span class="c">nohup ./servicio.sh &amp;</span>                      <span class="com"># segundo plano persistente</span>
+<span class="c">nice -n 10 ./informe.sh</span>                     <span class="com"># menor prioridad de CPU</span>
+<span class="c">renice -n 5 -p 2481</span>                        <span class="com"># cambia la prioridad en caliente</span></div>
+</section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+var fase14=0;
+document.getElementById('btn-proc').addEventListener('click',function(){
+  fase14=(fase14+1)%3;
+  var t=document.getElementById('p-term'),k=document.getElementById('p-kill');
+  t.setAttribute('opacity',fase14===2?'0.35':'1');
+  k.setAttribute('opacity',fase14===1?'0.35':'1');
+  this.textContent=fase14===0?'TERM frente a KILL':(fase14===1?'Ver KILL':'Ver TERM');
+  document.getElementById('txtProc').textContent=fase14===0?'Pulse el botón para comparar el cierre educado con el inmediato.':(fase14===1?'TERM: kill -TERM 2481 pide el cierre; el proceso libera recursos y termina.':'KILL: kill -KILL 2481 impone el cierre; el núcleo lo detiene sin avisar.');
+});
+</script></body></html>

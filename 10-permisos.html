@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>10 · Calculadora de permisos</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+.fila{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1 1 340px;min-width:300px}
+.grilla{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+.clase{background:#fafafa;border:1px solid #ddd;border-radius:10px;padding:10px 12px}
+.clase b{display:block;font-size:.85rem;margin-bottom:8px}
+.sw{display:flex;gap:6px;flex-wrap:wrap}
+.sw label{font-family:ui-monospace,Consolas,monospace;font-size:.85rem;background:#fff;border:1px solid #bbb;border-radius:7px;padding:5px 10px;cursor:pointer;user-select:none}
+.sw input{display:none}
+.sw input:checked+span{color:#fff}
+.sw label:has(input:checked){background:var(--azul);border-color:var(--azul);color:#fff;font-weight:700}
+.especial{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.especial label{font-size:.82rem;background:#fff;border:1px solid #bbb;border-radius:7px;padding:6px 10px;cursor:pointer}
+.especial label:has(input:checked){background:var(--rojo);border-color:var(--rojo);color:#fff;font-weight:700}
+.salida{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.85rem;line-height:1.8;white-space:pre}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">10 · UNIDAD 11</span><h1>Calculadora de permisos: simbólico, octal y especiales</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>Activa los bits y observa las tres notaciones <small>rwx · 0640 · 4750</small></h2>
+    <svg viewBox="0 0 800 170" role="img" aria-label="Anatomía de los nueve bits rwx y de los tres bits especiales en la notación simbólica y octal">
+      <defs>
+        <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+      </defs>
+      <text x="120" y="24" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">Clases del inodo</text>
+      <g fill="#004080"><rect x="20" y="36" width="100" height="42" rx="8"/><rect x="120" y="36" width="100" height="42" rx="8"/><rect x="220" y="36" width="100" height="42" rx="8"/></g>
+      <text x="70" y="54" font-size="11" text-anchor="middle" fill="#fff" font-weight="700">dueña</text>
+      <text x="70" y="70" font-size="11" text-anchor="middle" fill="#cfe0f2">u · rwx</text>
+      <text x="170" y="54" font-size="11" text-anchor="middle" fill="#fff" font-weight="700">grupo</text>
+      <text x="170" y="70" font-size="11" text-anchor="middle" fill="#cfe0f2">g · rwx</text>
+      <text x="270" y="54" font-size="11" text-anchor="middle" fill="#fff" font-weight="700">otros</text>
+      <text x="270" y="70" font-size="11" text-anchor="middle" fill="#cfe0f2">o · rwx</text>
+
+      <path d="M340 57 H400" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="370" y="48" font-size="10" font-weight="700" text-anchor="middle" fill="#B30000">suma</text>
+
+      <rect x="406" y="36" width="160" height="42" rx="8" fill="#151515"/>
+      <text x="486" y="54" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">notación octal</text>
+      <text x="486" y="71" font-size="11" text-anchor="middle" fill="#c8c8c8">4 + 2 + 1 por clase</text>
+
+      <path d="M486 78 V104" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+
+      <text x="120" y="128" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">Bits especiales</text>
+      <g fill="#EE0000"><rect x="20" y="138" width="100" height="24" rx="7"/><rect x="120" y="138" width="100" height="24" rx="7"/><rect x="220" y="138" width="100" height="24" rx="7"/></g>
+      <text x="70" y="155" font-size="11" text-anchor="middle" fill="#fff" font-weight="700">SUID · 4</text>
+      <text x="170" y="155" font-size="11" text-anchor="middle" fill="#fff" font-weight="700">SGID · 2</text>
+      <text x="270" y="155" font-size="11" text-anchor="middle" fill="#fff" font-weight="700">sticky · 1</text>
+      <text x="486" y="128" font-size="11" text-anchor="middle" fill="#151515" font-weight="700">rwxr-xr-x · 0755</text>
+      <text x="650" y="118" font-size="11" text-anchor="middle" fill="#555">rwsr-xr-x · con x · rwSr-xr-x · sin x</text>
+      <text x="650" y="132" font-size="11" text-anchor="middle" fill="#555">el 4.º dígito manda</text>
+      <path d="M330 150 H400" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="365" y="141" font-size="10" font-weight="700" text-anchor="middle" fill="#B30000">ocupa</text>
+    </svg>
+    <div class="fila">
+      <div class="col">
+        <div class="grilla">
+          <div class="clase"><b>Dueña (u)</b><div class="sw">
+            <label><input type="checkbox" id="ur" checked><span>r</span></label>
+            <label><input type="checkbox" id="uw" checked><span>w</span></label>
+            <label><input type="checkbox" id="ux" checked><span>x</span></label>
+          </div></div>
+          <div class="clase"><b>Grupo (g)</b><div class="sw">
+            <label><input type="checkbox" id="gr"><span>r</span></label>
+            <label><input type="checkbox" id="gw" checked><span>w</span></label>
+            <label><input type="checkbox" id="gx"><span>x</span></label>
+          </div></div>
+          <div class="clase"><b>Otros (o)</b><div class="sw">
+            <label><input type="checkbox" id="or"><span>r</span></label>
+            <label><input type="checkbox" id="ow"><span>w</span></label>
+            <label><input type="checkbox" id="ox"><span>x</span></label>
+          </div></div>
+        </div>
+        <div class="especial">
+          <label><input type="checkbox" id="suid">SUID (u+s)</label>
+          <label><input type="checkbox" id="sgid">SGID (g+s)</label>
+          <label><input type="checkbox" id="sticky">sticky (o+t)</label>
+        </div>
+        <p class="leyenda">SUID en ejecutables, SGID en directorios y sticky en carpetas compartidas. Ninguno de los tres cambia el significado de r, w ni x.</p>
+      </div>
+      <div class="col">
+        <div class="salida" id="salida"></div>
+        <table style="margin-top:12px">
+          <tr><th style="width:70px">Bit</th><th>Valor</th></tr>
+          <tr><td>r</td><td>4</td></tr>
+          <tr><td>w</td><td>2</td></tr>
+          <tr><td>x</td><td>1</td></tr>
+          <tr><td>s (SUID)</td><td>4</td></tr>
+          <tr><td>s (SGID)</td><td>2</td></tr>
+          <tr><td>t (sticky)</td><td>1</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+<section class="panel">
+    <h2>umask y casos típicos <small>máscara que el shell resta a 666</small></h2>
+    <div class="fila">
+      <div class="col">
+        <table>
+          <tr><th>umask</th><th>Equivale a</th><th>Archivos nuevos</th><th>Directorios nuevos</th></tr>
+          <tr><td><code>022</code></td><td><code>0644</code> / <code>0755</code></td><td><code>666 - 022 = 644</code></td><td><code>777 - 022 = 755</code></td></tr>
+          <tr><td><code>077</code></td><td><code>0600</code> / <code>0700</code></td><td><code>666 - 077 = 600</code></td><td><code>777 - 077 = 700</code></td></tr>
+        </table>
+        <p class="leyenda">Un archivo no tiene permiso de ejecución por defecto: el bit x se activa de forma explícita con <code>chmod +x</code>.</p>
+      </div>
+      <div class="col">
+        <table>
+          <tr><th><code>chmod</code></th><th>Simbólico</th><th>Uso</th></tr>
+          <tr><td><code>0700</code></td><td><code>rwx------</code></td><td>Privado del dueño, script personal.</td></tr>
+          <tr><td><code>0750</code></td><td><code>rwxr-x---</code></td><td>Directorio de equipo, el grupo entra.</td></tr>
+          <tr><td><code>0755</code></td><td><code>rwxr-xr-x</code></td><td>Ejecutable público, repositorio web.</td></tr>
+          <tr><td><code>4750</code></td><td><code>rwsr-x---</code></td><td>SUID en el ejecutable, uso administrativo puntual.</td></tr>
+          <tr><td><code>2775</code></td><td><code>rwxrwsr-x</code></td><td>SGID en el directorio: el grupo hereda el dueño.</td></tr>
+          <tr><td><code>1777</code></td><td><code>rwxrwxrwt</code></td><td>Sticky en carpeta compartida, como <code>/tmp</code>.</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Chuleta de comandos</h2>
+    <div class="chuleta"><span class="c">ls -l /etc/shadow</span>             <span class="com"># -rw-r-----  1 root root</span>
+<span class="c">stat -c '%A %a %U %G' /etc/passwd</span>   <span class="com"># simbólica, octal, dueño, grupo</span>
+<span class="c">chmod 0640 informe.txt</span>           <span class="com"># forma octal de 4 digitos</span>
+<span class="c">chmod u=rw,go=r informe.txt</span>      <span class="com"># forma simbólica</span>
+<span class="c">chmod 4750 programa.sh</span>           <span class="com"># añade SUID a un ejecutable</span>
+<span class="c">chmod u+s,g-s,o=t /tmp/compartido</span>  <span class="com"># bits especiales</span>
+<span class="c">umask 077</span>                        <span class="com"># archivos 600 y carpetas 700</span></div>
+  </section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+(function(){
+  var ids=['ur','uw','ux','gr','gw','gx','or','ow','ox','suid','sgid','sticky'];
+  function calc(){
+    var u=[$id('ur').checked,$id('uw').checked,$id('ux').checked];
+    var g=[$id('gr').checked,$id('gw').checked,$id('gx').checked];
+    var o=[$id('or').checked,$id('ow').checked,$id('ox').checked];
+    function sym(a){return (a[0]?'r':'-')+(a[1]?'w':'-')+(a[2]?'x':'-');}
+    function val(a){return (a[0]?4:0)+(a[1]?2:0)+(a[2]?1:0);}
+    function $id(x){return document.getElementById(x);}
+    var suid=$id('suid').checked,sgid=$id('sgid').checked,sticky=$id('sticky').checked;
+    var s=sym(u)+sym(g)+sym(o);
+    var sL=s.split('');
+    if(suid){sL[2]=u[2]?'s':'S';}
+    if(sgid){sL[5]=g[2]?'s':'S';}
+    if(sticky){sL[8]=o[2]?'t':'T';}
+    s=sL.join('');
+    var esp=(suid?4:0)+(sgid?2:0)+(sticky?1:0);
+    var octal=String(esp)+val(u)+val(g)+val(o);
+    var out=
+      'Simbólico  '+s+'\n'+
+      'Octal      '+octal+'   (4.º, 3.er, 2.º y 1.er dígitos)\n'+
+      'ls -l      -'+s+' 1 ansible ansible informe.txt\n'+
+      'Dueña      '+sym(u)+' = '+val(u)+'    Grupo '+sym(g)+' = '+val(g)+'    Otros '+sym(o)+' = '+val(o)+'\n'+
+      'Especiales SUID = '+(suid?'4':'0')+'  SGID = '+(sgid?'2':'0')+'  sticky = '+(sticky?'1':'0');
+    $id('salida').textContent=out;
+  }
+  ids.forEach(function(id){
+    document.getElementById(id).addEventListener('change',calc);
+  });
+  calc();
+})();
+</script></body></html>

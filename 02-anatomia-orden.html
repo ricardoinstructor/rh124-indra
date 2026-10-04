@@ -1,0 +1,142 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>02 · Anatomía de una orden</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+.term{background:#0e0e0e;border-radius:10px;padding:16px 18px;overflow-x:auto}
+.term .p{color:#7CFC98}.term .n{color:#fff;font-weight:700}.term .o{color:#F0AB00}.term .a{color:#7FB8FF}
+.term code{font-size:1.05rem;background:none;color:#fff;padding:0}
+.etiq{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;font-size:.78rem}
+.etiq div{border-top:3px solid var(--grisb);padding-top:5px;color:#555}
+.etiq div.on{border-top-color:var(--rojo);color:#151515;font-weight:600}
+.frase{margin:12px 0 0;font-size:.9rem}
+select{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;max-width:100%}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">02 · UNIDAD 2</span><h1>Anatomía de una orden</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>Estructura de la línea de órdenes <small>cada elemento tiene un color y una función</small></h2>
+    <svg viewBox="0 0 800 340" role="img" aria-label="Diagrama: prompt, comando, opciones y argumentos de una orden">
+      <defs>
+        <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+      </defs>
+      <style>
+        .m{font:20px ui-monospace,Consolas,monospace}
+        .mc{font:17px ui-monospace,Consolas,monospace}
+        .l{font:12px system-ui,sans-serif}
+        .ls{font:11px system-ui,sans-serif}
+      </style>
+
+      <rect x="20" y="40" width="760" height="70" rx="10" fill="#0e0e0e" stroke="#333" stroke-width="2"/>
+      <text x="40"  y="86" class="mc" fill="#7CFC98" textLength="235" lengthAdjust="spacingAndGlyphs">admin@servera:/var/log$</text>
+      <text x="295" y="86" class="mc" fill="#ffffff" font-weight="700" textLength="20" lengthAdjust="spacingAndGlyphs">ls</text>
+      <text x="345" y="86" class="mc" fill="#F0AB00" textLength="20" lengthAdjust="spacingAndGlyphs">-l</text>
+      <text x="395" y="86" class="mc" fill="#F0AB00" textLength="113" lengthAdjust="spacingAndGlyphs">--color=auto</text>
+      <text x="535" y="86" class="mc" fill="#7FB8FF" textLength="103" lengthAdjust="spacingAndGlyphs">/etc/passwd</text>
+      <text x="660" y="86" class="mc" fill="#7FB8FF" textLength="113" lengthAdjust="spacingAndGlyphs">informe.txt</text>
+
+      <path d="M157 118 L157 156" stroke="#3E9B4F" stroke-width="2" marker-end="url(#fl)" fill="none"/>
+      <text x="157" y="176" text-anchor="middle" class="l" fill="#3E9B4F" font-weight="700">prompt</text>
+      <text x="157" y="194" text-anchor="middle" class="ls" fill="#555">usuario y</text>
+      <text x="157" y="208" text-anchor="middle" class="ls" fill="#555">directorio</text>
+
+      <path d="M305 118 L305 156" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)" fill="none"/>
+      <text x="305" y="176" text-anchor="middle" class="l" fill="#EE0000" font-weight="700">comando</text>
+      <text x="305" y="194" text-anchor="middle" class="ls" fill="#555">programa que</text>
+      <text x="305" y="208" text-anchor="middle" class="ls" fill="#555">se ejecuta</text>
+
+      <path d="M426 118 L426 156" stroke="#F0AB00" stroke-width="2" marker-end="url(#fl)" fill="none"/>
+      <text x="426" y="176" text-anchor="middle" class="l" fill="#B07800" font-weight="700">opciones</text>
+      <text x="426" y="194" text-anchor="middle" class="ls" fill="#555">cortas y</text>
+      <text x="426" y="208" text-anchor="middle" class="ls" fill="#555">largas</text>
+
+      <path d="M653 118 L653 156" stroke="#7FB8FF" stroke-width="2" marker-end="url(#fl)" fill="none"/>
+      <text x="653" y="176" text-anchor="middle" class="l" fill="#004080" font-weight="700">argumentos</text>
+      <text x="653" y="194" text-anchor="middle" class="ls" fill="#555">objetos de la</text>
+      <text x="653" y="208" text-anchor="middle" class="ls" fill="#555">operación</text>
+
+      <rect x="20" y="236" width="760" height="86" rx="10" fill="#f0f0f0" stroke="#ddd"/>
+      <text x="40" y="266" class="m" fill="#151515">orden = comando [opciones] [argumentos]</text>
+      <text x="40" y="292" class="l" fill="#555">El shell separa campos por espacios. Entrecomilla los argumentos que contengan espacios.</text>
+      <text x="40" y="310" class="l" fill="#555">Las opciones pueden ser cortas (-l) o largas (--long) y se anteponen a los argumentos.</text>
+    </svg>
+  </section>
+
+  <section class="panel">
+    <h2>Etiquetado de una orden real <small>elija una orden</small></h2>
+    <p><label for="sel"><strong>Orden:</strong></label>
+      <select id="sel">
+        <option value="0">ls -l --color=auto /etc/passwd informe.txt</option>
+        <option value="1">chmod 640 informe.txt</option>
+        <option value="2">ping -c 4 serverb</option>
+        <option value="3">dnf install vim</option>
+      </select>
+    </p>
+    <div class="term" id="linea"></div>
+    <div class="etiq">
+      <div id="e0"><strong>prompt</strong><br>usuario@host:directorio$</div>
+      <div id="e1"><strong>comando</strong><br>programa ejecutado</div>
+      <div id="e2"><strong>opciones</strong><br>modifican el comportamiento</div>
+      <div id="e3"><strong>argumentos</strong><br>objetos de la operación</div>
+    </div>
+    <p class="frase" id="frase"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Chuleta de comandos <small>cada línea, un elemento de la estructura</small></h2>
+    <div class="chuleta"><span class="c">ls</span>                            <span class="com"># solo el comando: lista el directorio actual</span>
+<span class="c">ls -l</span>                         <span class="com"># opción corta: listado detallado</span>
+<span class="c">ls --long</span>                     <span class="com"># opción larga equivalente a -l</span>
+<span class="c">ls -l /etc/passwd</span>             <span class="com"># argumento: un archivo concreto</span>
+<span class="c">dnf install vim</span>              <span class="com"># subcomando como argumento del comando dnf</span>
+<span class="c">man ls</span>                        <span class="com"># documentación de la orden: secciones DESCRIPCIÓN y OPCIONES</span></div>
+  </section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+const ORDENES=[
+ {p:'admin@servera:/var/log$',c:'ls',o:['-l','--color=auto'],a:['/etc/passwd','informe.txt'],
+  f:'Lista en formato largo el contenido de /etc/passwd e informe.txt: permisos, propietario, tamaño y fecha.'},
+ {p:'admin@servera:/home/admin$',c:'chmod',o:[],a:['640','informe.txt'],
+  f:'Fija el modo octal 640 (rw-r-----) del archivo informe.txt; el modo es un argumento.'},
+ {p:'admin@servera:/home/admin$',c:'ping',o:['-c','4'],a:['serverb'],
+  f:'Envía cuatro paquetes ICMP al host serverb y muestra el tiempo de respuesta.'},
+ {p:'admin@servera:/home/admin$',c:'dnf',o:['install'],a:['vim'],
+  f:'Instala el paquete vim resolviendo sus dependencias desde los repositorios habilitados.'}
+];
+function pintar(n){
+ const d=ORDENES[n],l=document.getElementById('linea');
+ l.innerHTML='<span class="p">'+d.p+'</span> <span class="n">'+d.c+'</span> '+
+  d.o.map(x=>'<span class="o">'+x+'</span>').join(' ')+' '+
+  d.a.map(x=>'<span class="a">'+x+'</span>').join(' ');
+ document.getElementById('frase').textContent=d.f;
+ document.getElementById('e1').className='on';
+ document.getElementById('e2').className=d.o.length?'on':'';
+ document.getElementById('e3').className=d.a.length?'on':'';
+}
+document.getElementById('sel').addEventListener('change',function(){pintar(this.value);});
+pintar(0);
+</script></body></html>

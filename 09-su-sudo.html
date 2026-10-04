@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>09 · su frente a sudo</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">09 · UNIDAD 10</span><h1>su frente a sudo</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>Dos caminos para ejecutar con privilegios <small>su cambia de identidad · sudo ejecuta una orden</small></h2>
+    <svg viewBox="0 0 800 760" role="img" aria-label="Comparativa en dos columnas entre su y sudo, y flujo de decisión de sudoers">
+      <defs>
+        <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+        <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#3E9B4F"/>
+        </marker>
+      </defs>
+      <style>svg text{stroke:none;paint-order:stroke}</style>
+      <rect x="20" y="16" width="370" height="212" rx="12" fill="#004080"/>
+      <text x="205" y="42" font-size="15" text-anchor="middle" fill="#fff" font-weight="700" stroke="none">su</text>
+      <text x="205" y="62" font-size="11" text-anchor="middle" fill="#cfe0f2" stroke="none">sustituye la identidad de la sesión</text>
+      <rect x="36" y="78" width="160" height="40" rx="8" fill="#fff" stroke="#004080"/>
+      <rect x="214" y="78" width="160" height="40" rx="8" fill="#fff" stroke="#004080"/>
+      <text x="116" y="94" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">student escribe</text>
+      <text x="116" y="110" font-size="10" text-anchor="middle" fill="#555" stroke="none">su -</text>
+      <text x="294" y="94" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">pide la clave de root</text>
+      <text x="294" y="110" font-size="10" text-anchor="middle" fill="#555" stroke="none">no la clave propia</text>
+      <path d="M196 98 H210" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <rect x="36" y="134" width="160" height="40" rx="8" fill="#fff" stroke="#004080"/>
+      <rect x="214" y="134" width="160" height="40" rx="8" fill="#fff" stroke="#004080"/>
+      <text x="116" y="150" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">nueva shell root</text>
+      <text x="116" y="166" font-size="10" text-anchor="middle" fill="#555" stroke="none">UID 0, HOME=/root</text>
+      <text x="294" y="150" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">sesión completa</text>
+      <text x="294" y="166" font-size="10" text-anchor="middle" fill="#555" stroke="none">todo el shell es root</text>
+      <path d="M116 118 V130" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <path d="M294 118 V130" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <rect x="36" y="190" width="338" height="26" rx="8" fill="#00325f"/>
+      <text x="205" y="207" font-size="11" text-anchor="middle" fill="#e6f0fa" stroke="none">Vuelve al usuario con exit o Ctrl+D.</text>
+
+      <rect x="410" y="16" width="370" height="212" rx="12" fill="#EE0000"/>
+      <text x="595" y="42" font-size="15" text-anchor="middle" fill="#fff" font-weight="700" stroke="none">sudo</text>
+      <text x="595" y="62" font-size="11" text-anchor="middle" fill="#fff" stroke="none">ejecuta UNA orden con privilegios</text>
+      <rect x="426" y="78" width="160" height="40" rx="8" fill="#fff" stroke="#EE0000"/>
+      <rect x="604" y="78" width="160" height="40" rx="8" fill="#fff" stroke="#EE0000"/>
+      <text x="506" y="94" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">student escribe</text>
+      <text x="506" y="110" font-size="10" text-anchor="middle" fill="#555" stroke="none">sudo dnf update</text>
+      <text x="684" y="94" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">pide su propia clave</text>
+      <text x="684" y="110" font-size="10" text-anchor="middle" fill="#555" stroke="none">política PAM</text>
+      <path d="M586 98 H600" stroke="#fff" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <rect x="426" y="134" width="160" height="40" rx="8" fill="#fff" stroke="#EE0000"/>
+      <rect x="604" y="134" width="160" height="40" rx="8" fill="#fff" stroke="#EE0000"/>
+      <text x="506" y="150" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">solo esa orden</text>
+      <text x="506" y="166" font-size="10" text-anchor="middle" fill="#555" stroke="none">sudo -u ansible …</text>
+      <text x="684" y="150" font-size="11" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">registro</text>
+      <text x="684" y="166" font-size="10" text-anchor="middle" fill="#555" stroke="none">/var/log/sudo.log</text>
+      <path d="M506 118 V130" stroke="#fff" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <path d="M684 118 V130" stroke="#fff" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <rect x="426" y="190" width="338" height="26" rx="8" fill="#7a0000"/>
+      <text x="595" y="207" font-size="11" text-anchor="middle" fill="#ffffff" stroke="none">La shell del usuario sigue siendo la suya.</text>
+
+      <text x="400" y="268" font-size="13" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">Flujo de decisión de sudo</text>
+
+      <rect x="250" y="286" width="300" height="44" rx="10" fill="#151515"/>
+      <text x="400" y="313" font-size="13" text-anchor="middle" fill="#fff" font-weight="700" stroke="none">student: sudo dnf install nginx</text>
+      <path d="M400 330 V356" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="416" y="350" font-size="10" fill="#B30000" font-weight="700" stroke="none">solicita privilegios</text>
+
+      <polygon points="400,360 540,402 400,444 260,402" fill="#F0AB00"/>
+      <text x="400" y="398" font-size="12" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">¿Tiene sudo</text>
+      <text x="400" y="414" font-size="12" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">en /etc/sudoers?</text>
+      <text x="250" y="386" font-size="10" fill="#B30000" font-weight="700" text-anchor="end" stroke="none">no → denegado</text>
+
+      <path d="M400 444 V474" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="414" y="466" font-size="10" fill="#B30000" font-weight="700" stroke="none">sí</text>
+
+      <polygon points="400,478 540,520 400,562 260,520" fill="#F0AB00"/>
+      <text x="400" y="516" font-size="12" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">¿La orden está permitida</text>
+      <text x="400" y="532" font-size="12" text-anchor="middle" fill="#151515" font-weight="700" stroke="none">por las reglas?</text>
+      <text x="250" y="504" font-size="10" fill="#B30000" font-weight="700" text-anchor="end" stroke="none">no → denegado</text>
+
+      <path d="M400 562 V588" stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)"/>
+      <text x="414" y="582" font-size="10" fill="#B30000" font-weight="700" stroke="none">sí</text>
+
+      <rect x="250" y="592" width="300" height="46" rx="10" fill="#3E9B4F"/>
+      <text x="400" y="612" font-size="13" text-anchor="middle" fill="#fff" font-weight="700" stroke="none">Se pide la contraseña de student</text>
+      <text x="400" y="630" font-size="11" text-anchor="middle" fill="#e6f5ea" stroke="none">se registra la orden en el log</text>
+      <path d="M400 638 V664" stroke="#3E9B4F" stroke-width="2" fill="none" marker-end="url(#g)"/>
+      <rect x="250" y="668" width="300" height="44" rx="10" fill="#004080"/>
+      <text x="400" y="695" font-size="13" text-anchor="middle" fill="#fff" font-weight="700" stroke="none">La orden se ejecuta como root</text>
+
+      <path d="M260 402 H120 V664 H246" stroke="#EE0000" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+      <rect x="24" y="414" width="96" height="50" rx="8" fill="#fff" stroke="#EE0000"/>
+      <text x="72" y="434" font-size="11" text-anchor="middle" fill="#B30000" font-weight="700" stroke="none">Denegado</text>
+      <text x="72" y="450" font-size="10" text-anchor="middle" fill="#555" stroke="none">sin ejecutar</text>
+    </svg>
+    <p class="leyenda">root no solicita contraseña: tanto <code>su</code> como <code>sudo</code> lo reconocen sin verificación.</p>
+  </section>
+<section class="panel">
+    <h2>Tabla de diferencias</h2>
+    <table>
+      <tr><th style="width:130px">Aspecto</th><th>su</th><th>sudo</th></tr>
+      <tr><td>Contraseña</td><td>La de root, preguntada por PAM al usuario root.</td><td>La del propio usuario;root no la necesita nunca.</td></tr>
+      <tr><td>Alcance</td><td>Sesión completa: la shell entera pasa a ser de root.</td><td>Una sola orden; la shell sigue siendo del usuario.</td></tr>
+      <tr><td>Registro</td><td>Se anota en <code>/var/log/secure</code> y en <code>utmp</code>.</td><td>Se anota en <code>/var/log/sudo.log</code> o en <code>journalctl _COMM=sudo</code>.</td></tr>
+      <tr><td>Configuración</td><td><code>/etc/pam.d/su</code> restringe quién puede usar <code>su</code>.</td><td><code>/etc/sudoers</code>, que solo se edita con <code>visudo</code>.</td></tr>
+      <tr><td>Tiempo de ejecución</td><td>Requiere actualizar la credencial de la sesión.</td><td>Credencial temporal, cacheada por <code>timestamp</code> en <code>/run/sudo/ts</code>.</td></tr>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Chuleta de comandos</h2>
+    <div class="chuleta"><span class="c">sudo -l</span>                        <span class="com"># reglas que me afectan</span>
+<span class="c">sudo -u ansible whoami</span>        <span class="com"># ejecuta como ansible</span>
+<span class="c">sudoedit /etc/hosts</span>            <span class="com"># edita como root, copia propia</span>
+<span class="c">sudo -u ansible ansible-playbook site.yml</span> <span class="com"># automatización sin ser root</span>
+<span class="c">visudo</span>                        <span class="com"># edita sudoers con validación</span>
+<span class="c">sudo journalctl _COMM=sudo</span>  <span class="com"># registro en journal</span></div>
+  </section>
+</main>
+<footer>Material didáctico · RH124 Red Hat System Administration I · Uso didáctico</footer>
+</body></html>

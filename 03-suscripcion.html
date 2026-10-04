@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 · Suscripción, repos y Insights</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">03 · UNIDAD 4</span><h1>Suscripción, repos y Insights</h1></div></div></header>
+<main>
+  <section class="panel">
+    <h2>RHEL registrado frente a Red Hat <small>qué habilita la suscripción</small></h2>
+    <svg viewBox="0 0 844 410" role="img" aria-label="Diagrama: sistema RHEL registrado que apunta al portal de suscripciones y recibe repositorios, Insights y soporte">
+      <defs>
+        <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+        </marker>
+        <marker id="fb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#004080"/>
+        </marker>
+      </defs>
+      <style>
+        .tb{font:600 13px system-ui,sans-serif;fill:#fff;stroke:none}
+        .t{font:13px system-ui,sans-serif;fill:#151515;stroke:none}
+        .ts{font:11px system-ui,sans-serif;fill:#555;stroke:none}
+        .lw{font:11px system-ui,sans-serif;fill:#EE0000;stroke:none}
+        .lb{font:11px system-ui,sans-serif;fill:#004080;stroke:none}
+        .m{font:12px ui-monospace,Consolas,monospace;stroke:none}
+        .bx{stroke-width:2}
+        svg text{stroke:none}
+      </style>
+
+      <rect x="16" y="120" width="230" height="170" rx="10" fill="#151515" class="bx" stroke="#151515"/>
+      <text x="131" y="150" text-anchor="middle" class="tb">Sistema RHEL</text>
+      <text x="131" y="172" text-anchor="middle" class="tb" font-size="11">subscription-manager</text>
+      <text x="131" y="190" text-anchor="middle" class="tb" font-size="11">identidad del sistema</text>
+      <rect x="36" y="208" width="190" height="34" rx="6" fill="#EE0000"/>
+      <text x="131" y="230" text-anchor="middle" class="tb">register --activationkey</text>
+      <text x="131" y="262" text-anchor="middle" class="tb" font-size="11">RHC: /etc/rhc/rhc.yaml</text>
+      <text x="131" y="280" text-anchor="middle" class="tb" font-size="11">asocia la suscripción</text>
+
+      <line x1="246" y1="198" x2="452" y2="198" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="349" y="188" text-anchor="middle" class="lw">registro y datos del sistema</text>
+      <path d="M452 214 L246 214" stroke="#004080" stroke-width="2" marker-end="url(#fb)"/>
+      <text x="349" y="234" text-anchor="middle" class="lb">permisos y contenido del portal</text>
+
+      <rect x="454" y="120" width="180" height="170" rx="10" fill="#EE0000" class="bx" stroke="#B30000"/>
+      <text x="544" y="152" text-anchor="middle" class="tb">Red Hat</text>
+      <text x="544" y="174" text-anchor="middle" class="tb" font-size="11">portal de suscripciones</text>
+      <text x="544" y="192" text-anchor="middle" class="tb" font-size="11">catálogo y cuentas</text>
+      <rect x="474" y="210" width="140" height="30" rx="6" fill="#fff"/>
+      <text x="544" y="230" text-anchor="middle" class="m" fill="#151515">suscripción activa</text>
+      <text x="544" y="266" text-anchor="middle" class="tb" font-size="11">asocia el sistema a un</text>
+      <text x="544" y="282" text-anchor="middle" class="tb" font-size="11">contrato y a un RHC</text>
+
+      <path d="M544 292 L544 320" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <rect x="552" y="294" width="86" height="30" rx="3" fill="#fff" stroke="#ddd"/>
+      <text x="556" y="306" class="lw">habilita</text>
+      <text x="556" y="319" class="lw">contrato</text>
+
+      <rect x="454" y="322" width="180" height="80" rx="10" fill="#F0AB00" class="bx" stroke="#C08800"/>
+      <text x="544" y="346" text-anchor="middle" class="t" font-weight="700">Tres habilitaciones</text>
+      <text x="544" y="364" text-anchor="middle" class="ts">1 · repositorios CDN</text>
+      <text x="544" y="379" text-anchor="middle" class="ts">2 · Red Hat Insights</text>
+      <text x="544" y="394" text-anchor="middle" class="ts">3 · casos de soporte</text>
+
+      <line x1="636" y1="150" x2="672" y2="150" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="654" y="138" text-anchor="middle" class="lw">baja</text>
+      <line x1="636" y1="224" x2="672" y2="224" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="654" y="212" text-anchor="middle" class="lw">envía</text>
+      <line x1="636" y1="296" x2="672" y2="296" stroke="#EE0000" stroke-width="2" marker-end="url(#fl)"/>
+      <text x="654" y="284" text-anchor="middle" class="lw">abre</text>
+
+      <rect x="674" y="118" width="154" height="68" rx="10" fill="#004080" class="bx" stroke="#002952"/>
+      <text x="751" y="142" text-anchor="middle" class="tb">CDN de repos</text>
+      <text x="751" y="162" text-anchor="middle" class="tb" font-size="11">BaseOS · AppStream</text>
+      <text x="751" y="176" text-anchor="middle" class="tb" font-size="11">CodeReady Builder</text>
+
+      <rect x="674" y="192" width="154" height="68" rx="10" fill="#151515" class="bx" stroke="#151515"/>
+      <text x="751" y="216" text-anchor="middle" class="tb">Red Hat Insights</text>
+      <text x="751" y="236" text-anchor="middle" class="tb" font-size="11">metadatos del sistema</text>
+      <text x="751" y="250" text-anchor="middle" class="tb" font-size="11">detección de problemas</text>
+
+      <rect x="674" y="266" width="154" height="68" rx="10" fill="#3E9B4F" class="bx" stroke="#2C6E39"/>
+      <text x="751" y="290" text-anchor="middle" class="tb">Casos de soporte</text>
+      <text x="751" y="310" text-anchor="middle" class="tb" font-size="11">diagnóstico adjunto</text>
+      <text x="751" y="324" text-anchor="middle" class="tb" font-size="11">respuesta del soporte</text>
+
+      <rect x="16" y="320" width="230" height="68" rx="10" fill="#f0f0f0" stroke="#ddd"/>
+      <text x="131" y="344" text-anchor="middle" class="t" font-weight="700">Del lado del sistema</text>
+      <text x="131" y="364" text-anchor="middle" class="ts">dnf descarga del CDN</text>
+      <text x="131" y="378" text-anchor="middle" class="ts">insights-client envía metadatos</text>
+    </svg>
+    <p class="leyenda">Sin suscripción activa no hay acceso a los repositorios de RHEL, a Insights ni a casos de soporte.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Qué significa cada elemento</h2>
+    <table>
+      <tr><th style="width:26%">Elemento</th><th>Qué significa</th></tr>
+      <tr><td><strong>Suscripción</strong></td><td>Contrato que autoriza el uso del producto y da acceso al software, al soporte y a las herramientas de diagnóstico.</td></tr>
+      <tr><td><strong>RHC</strong></td><td>Identificador del Rights Management: la configuración <code>rhc.yaml</code> que guarda la relación entre sistema y suscripción.</td></tr>
+      <tr><td><strong>Repos CDN</strong></td><td>Repositorios BaseOS, AppStream y CodeReady Builder servidos por Red Hat; su descarga requiere suscripción.</td></tr>
+      <tr><td><strong>Red Hat Insights</strong></td><td>Recoge datos de estado del sistema y detecta problemas conocidos antes de que se produzcan incidencias.</td></tr>
+      <tr><td><strong>Soporte</strong></td><td>Apertura de casos desde el portal con el diagnóstico del sistema incorporado en el caso.</td></tr>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Comandos de suscripción <small>verificar, registrar y mantener</small></h2>
+    <div class="chuleta"><span class="c">subscription-manager identity</span>       <span class="com"># identidad y UUID del sistema</span>
+<span class="c">subscription-manager status</span>          <span class="com"># estado del registro y suscripción actual</span>
+<span class="c">subscription-manager register</span>        <span class="com"># registra el sistema con una clave de activación</span>
+<span class="c">subscription-manager list --installed</span> <span class="com"># suscripciones instaladas en el sistema</span>
+<span class="c">subscription-manager repos --list-enabled</span> <span class="com"># repositorios habilitados por la suscripción</span>
+<span class="c">dnf repolist</span>                       <span class="com"># repositorios que usa dnf tras el registro</span></div>
+  </section>
+</main>
+<footer>Material didáctico · RH124 Red Hat System Administration I · Uso didáctico</footer>
+</body></html>

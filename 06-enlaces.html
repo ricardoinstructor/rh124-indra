@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06 · Enlaces duros y simbólicos</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">06 · UNIDAD 7</span><h1>Enlaces duros y simbólicos</h1></div></div></header>
+<main>
+<section class="panel">
+    <h2>Lectura del diagrama <small>fichero original con su inodo, duro al mismo inodo, simbólico a una ruta</small></h2>
+    <svg viewBox="0 0 800 430" role="img" aria-label="Original con su inodo; el enlace duro comparte el inodo; el simbólico guarda la ruta">
+    <defs>
+      <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+      </marker>
+      <marker id="v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#3E9B4F"/>
+      </marker>
+    </defs>
+    <rect x="20" y="30" width="250" height="120" rx="10" fill="#3E9B4F"/>
+    <text x="145" y="58" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">fichero original</text>
+    <text x="145" y="80" font-size="11" text-anchor="middle" fill="#fff">/var/lib/datos.txt</text>
+    <rect x="45" y="92" width="200" height="40" rx="8" fill="#fff"/>
+    <text x="145" y="110" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">inodo 204817</text>
+    <text x="145" y="126" font-size="10" text-anchor="middle" fill="#555">datos en bloques 8129-8131</text>
+    <rect x="20" y="200" width="250" height="120" rx="10" fill="#F0AB00"/>
+    <text x="145" y="228" font-size="13" text-anchor="middle" fill="#151515" font-weight="700">enlace DURO</text>
+    <text x="145" y="250" font-size="11" text-anchor="middle" fill="#151515">/home/usuario/copia.txt</text>
+    <rect x="45" y="262" width="200" height="40" rx="8" fill="#fff"/>
+    <text x="145" y="280" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">inodo 204817</text>
+    <text x="145" y="296" font-size="10" text-anchor="middle" fill="#555">mismo inodo, mismo sistema</text>
+    <rect x="20" y="352" width="360" height="66" rx="10" fill="#151515"/>
+    <text x="200" y="376" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">enlace SIMBÓLICO</text>
+    <text x="200" y="396" font-size="11" text-anchor="middle" fill="#c8c8c8">/tmp/soft.txt, inodo propio 204819, guarda la ruta</text>
+    <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+      <path d="M145 150 V196"/>
+      
+    </g>
+    <text x="152" y="178" font-size="10" font-weight="700" fill="#B30000">mismo inodo</text>
+    <g stroke="#3E9B4F" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#v)">
+      <path d="M380 358 H560 V200 H552"/>
+    </g>
+    <text x="420" y="348" font-size="10" font-weight="700" fill="#1F7A33">ruta, no inodo</text>
+    <rect x="420" y="120" width="360" height="80" rx="10" fill="#f7f7f7" stroke="#c8c8c8"/>
+    <text x="600" y="146" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">Tabla de inodos</text>
+    <text x="600" y="168" font-size="11" text-anchor="middle" fill="#555">204817 sirve a datos.txt y a copia.txt; 204819 sirve a soft.txt</text>
+    <text x="600" y="186" font-size="10" text-anchor="middle" fill="#555">ls -li muestra el inodo de cada nombre</text>
+    <g id="del">
+    <rect x="420" y="230" width="360" height="150" rx="10" fill="#f7f7f7" stroke="#c8c8c8"/>
+    <text x="600" y="256" font-size="12" text-anchor="middle" fill="#151515" font-weight="700">Al borrar el original</text>
+    <text x="600" y="280" font-size="11" text-anchor="middle" fill="#1F7A33">el DURO sigue: el inodo 204817 conserva los datos</text>
+    <text x="600" y="300" font-size="11" text-anchor="middle" fill="#B30000">el SIMBÓLICO se rompe: la ruta ya no lleva a nada</text>
+    <text x="600" y="330" font-size="13" text-anchor="middle" fill="#c8c8c8" font-weight="700" id="tacha">/var/lib/datos.txt</text>
+    <line x1="500" y1="322" x2="700" y2="338" stroke="#EE0000" stroke-width="3" id="aspa" opacity="0"/>
+    <text x="600" y="360" font-size="11" text-anchor="middle" fill="#555" id="veredicto">pulse el boton para borrar el original</text>
+    </g>
+    </svg>
+    <p><button class="btn" id="btn">Borrar el original</button>
+    <span class="leyenda" id="out" style="margin-left:10px">El original existe: ambos enlaces funcionan.</span></p>
+
+</section>
+
+<section class="panel">
+<h2>Comparativa</h2>
+<table>
+<tr><th>Aspecto</th><th>Enlace duro</th><th>Enlace simbólico</th></tr>
+<tr><td>Qué guarda</td><td>El número de inodo, compartido</td><td>La ruta hacia el destino</td></tr>
+<tr><td>Al borrar el original</td><td>Los datos sobreviven mientras exista el enlace</td><td>El enlace queda roto y no abre nada</td></tr>
+<tr><td>Sistemas de archivos</td><td>Solo dentro del mismo sistema de archivos</td><td>Puede apuntar a cualquier ruta accesible</td></tr>
+<tr><td>Permisos</td><td>Comparte los permisos del inodo original</td><td>Tiene permisos propios; los del destino siguen aplicando</td></tr>
+</table>
+</section>
+
+<section class="panel">
+<h2>Chuleta de comandos</h2>
+<div class="chuleta"><span class="c">ln /var/lib/datos.txt /tmp/hard.txt</span>   <span class="com"># enlace duro</span>
+<span class="c">ln -s /var/lib/datos.txt /tmp/soft.txt</span>  <span class="com"># enlace simbólico</span>
+<span class="c">ls -li /var/lib/datos.txt /tmp/*.txt</span>   <span class="com"># -i muestra el inodo</span>
+<span class="c">stat /tmp/soft.txt</span>                    <span class="com"># el tamaño es la ruta</span>
+<span class="c">rm /var/lib/datos.txt</span>                 <span class="com"># el duro sigue, el simbólico no</span>
+<span class="c">readlink /tmp/soft.txt</span>                <span class="com"># muestra la ruta guardada</span></div>
+</section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+document.getElementById('btn').addEventListener('click',function(){
+  var borrado=this.dataset.off==='1';
+  if(!borrado){
+    this.dataset.off='1';this.textContent='Restaurar el original';
+    document.getElementById('aspa').setAttribute('opacity','1');
+    document.getElementById('tacha').setAttribute('fill','#B30000');
+    document.getElementById('veredicto').textContent='original borrado: el duro abre, el simbolico da error';
+    document.getElementById('out').textContent='Sin original: copia.txt abre los datos; soft.txt queda roto.';
+  }else{
+    this.dataset.off='';this.textContent='Borrar el original';
+    document.getElementById('aspa').setAttribute('opacity','0');
+    document.getElementById('tacha').setAttribute('fill','#c8c8c8');
+    document.getElementById('veredicto').textContent='pulse el boton para borrar el original';
+    document.getElementById('out').textContent='El original existe: ambos enlaces funcionan.';
+  }
+});
+</script></body></html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05 · Jerarquía FHS y tipos de fichero</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">05 · UNIDAD 6</span><h1>Jerarquía FHS y tipos de fichero</h1></div></div></header>
+<main>
+
+<section class="panel">
+<h2>Árbol de directorios <small>FHS: Filesystem Hierarchy Standard</small></h2>
+<svg viewBox="0 0 800 560" role="img" aria-label="Árbol de directorios con raíz y catorce ramas">
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+    </marker>
+  </defs>
+  <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+    <path d="M400 70 V96 H110 V142"/>
+    <path d="M400 70 V96 H300 V142"/>
+    <path d="M400 70 V142"/>
+    <path d="M400 70 V96 H690 V142"/>
+    <path d="M400 70 V96 M400 96 V276"/>
+  </g>
+  <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+    <path d="M400 276 H110 V322"/>
+    <path d="M400 276 H300 V322"/>
+    <path d="M400 276 H500 V322"/>
+    <path d="M400 276 H690 V322"/>
+  </g>
+  <line x1="400" y1="380" x2="400" y2="440" stroke="#EE0000" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M110 440 H690" stroke="#EE0000" stroke-width="2" fill="none"/>
+  <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+    <path d="M222 440 V457"/>
+    <path d="M362 440 V457"/>
+    <path d="M503 440 V457"/>
+    <path d="M643 440 V457"/>
+  </g>
+  <text x="400" y="420" font-size="11" fill="#B30000" text-anchor="middle" font-weight="700">binarios, bibliotecas montadas y datos de servicio</text>
+  <rect x="340" y="16" width="120" height="54" rx="10" fill="#151515"/>
+  <text x="400" y="42" fill="#fff" font-size="18" text-anchor="middle" font-weight="700">/</text>
+  <text x="400" y="60" fill="#c8c8c8" font-size="11" text-anchor="middle">raíz del sistema</text>
+
+  <g font-size="14" text-anchor="middle" font-weight="700">
+    <rect x="30" y="142" width="160" height="58" rx="9" fill="#004080"/>
+    <text x="110" y="166" fill="#fff">/etc</text>
+    <rect x="220" y="142" width="160" height="58" rx="9" fill="#004080"/>
+    <text x="300" y="166" fill="#fff">/var</text>
+    <rect x="490" y="142" width="160" height="58" rx="9" fill="#004080"/>
+    <text x="570" y="166" fill="#fff">/home</text>
+    <rect x="610" y="142" width="160" height="58" rx="9" fill="#004080"/>
+    <text x="690" y="166" fill="#fff">/tmp</text>
+    <rect x="30" y="322" width="160" height="58" rx="9" fill="#151515"/>
+    <text x="110" y="346" fill="#fff">/usr</text>
+    <rect x="220" y="322" width="160" height="58" rx="9" fill="#151515"/>
+    <text x="300" y="346" fill="#fff">/root</text>
+    <rect x="420" y="322" width="160" height="58" rx="9" fill="#151515"/>
+    <text x="500" y="346" fill="#fff">/dev</text>
+    <rect x="610" y="322" width="160" height="58" rx="9" fill="#151515"/>
+    <text x="690" y="346" fill="#fff">/proc</text>
+  </g>
+  <g font-size="11" fill="#555" text-anchor="middle">
+    <text x="110" y="216">Configuración del</text><text x="110" y="230">sistema y servicios</text>
+    <text x="300" y="216">Datos variables</text><text x="300" y="230">y registros</text>
+    <text x="570" y="216">Directorios de</text><text x="570" y="230">los usuarios</text>
+    <text x="690" y="216">Ficheros</text><text x="690" y="230">temporales</text>
+    <text x="110" y="396">Programas y</text><text x="110" y="410">bibliotecas</text>
+    <text x="300" y="396">Directorio de</text><text x="300" y="410">trabajo de root</text>
+    <text x="500" y="396">Dispositivos de</text><text x="500" y="410">entrada y salida</text>
+    <text x="690" y="396">Procesos y estado</text><text x="690" y="410">del núcleo</text>
+  </g>
+  <g font-size="14" text-anchor="middle" font-weight="700">
+    <rect x="142" y="457" width="160" height="44" rx="9" fill="#004080"/>
+    <text x="222" y="484" fill="#fff">/lib</text>
+    <rect x="282" y="457" width="160" height="44" rx="9" fill="#004080"/>
+    <text x="362" y="484" fill="#fff">/sbin</text>
+    <rect x="423" y="457" width="160" height="44" rx="9" fill="#004080"/>
+    <text x="503" y="484" fill="#fff">/opt</text>
+    <rect x="563" y="457" width="160" height="44" rx="9" fill="#004080"/>
+    <text x="643" y="484" fill="#fff">/srv</text>
+  </g>
+  <g font-size="11" fill="#555" text-anchor="middle">
+    <text x="222" y="517">Bibliotecas</text><text x="222" y="531">compartidas</text>
+    <text x="362" y="517">Binarios de</text><text x="362" y="531">administración</text>
+    <text x="503" y="517">Software</text><text x="503" y="531">opcional</text>
+    <text x="643" y="517">Datos de</text><text x="643" y="531">servicios</text>
+  </g>
+</svg>
+<svg viewBox="0 0 800 74" role="img" aria-label="Ramas virtuales y de red: sys y afs">
+  <g font-size="14" text-anchor="middle" font-weight="700">
+    <rect x="180" y="8" width="200" height="40" rx="9" fill="#151515"/>
+    <text x="280" y="34" fill="#fff">/sys</text>
+    <rect x="420" y="8" width="200" height="40" rx="9" fill="#151515"/>
+    <text x="520" y="34" fill="#fff">/afs</text>
+  </g>
+  <g font-size="11" fill="#555" text-anchor="middle">
+    <text x="280" y="64">Dispositivos y núcleo (sysfs)</text>
+    <text x="520" y="64">Punto de montaje AFS en Red Hat</text>
+  </g>
+</svg>
+<p class="leyenda">Lectura de arriba abajo: de <code>/</code> cuelgan catorce ramas de uso general. Cada rama agrupa ficheros con la misma función. <code>/proc</code> y <code>/sys</code> son virtuales (las crea el núcleo); <code>/afs</code> es el punto de montaje del sistema de archivos de red AFS.</p>
+</section>
+<section class="panel">
+<h2>Tipos de fichero según <code>ls -l</code> <small>primer carácter de la línea</small></h2>
+<table>
+<tr><th style="width:70px">Carácter</th><th style="width:230px">Tipo</th><th>Función</th></tr>
+<tr><td><code>-</code></td><td>Fichero regular</td><td>Contiene datos: texto, binario o imagen.</td></tr>
+<tr><td><code>d</code></td><td>Directorio</td><td>Agrupa entradas con nombre y contiene otros ficheros.</td></tr>
+<tr><td><code>l</code></td><td>Enlace simbólico</td><td>Guarda una ruta hacia otro fichero del sistema.</td></tr>
+<tr><td><code>b</code></td><td>Dispositivo de bloques</td><td>Acceso por bloques a discos, SSD o particiones.</td></tr>
+<tr><td><code>c</code></td><td>Dispositivo de caracteres</td><td>Acceso byte a byte: teclado, terminal, puertos.</td></tr>
+<tr><td><code>s</code></td><td>Socket</td><td>Punto de comunicación local entre dos procesos.</td></tr>
+<tr><td><code>p</code></td><td>Tubería con nombre</td><td>Archivo especial que conecta procesos del mismo host.</td></tr>
+</table>
+<p class="leyenda">El enlace duro aparece en la misma columna que el fichero regular: <code>ls -l</code> no lo distingue; solo lo delata el número de inodo repetido.</p>
+</section>
+
+<section class="panel">
+<h2>Chuleta de comandos</h2>
+<div class="chuleta"><span class="c">ls -l /etc</span>            <span class="com"># primer carácter = tipo de cada entrada</span>
+<span class="c">ls -F /usr/bin</span>          <span class="com"># añade / * @ = a cada nombre</span>
+<span class="c">file /dev/sda</span>            <span class="com"># contenido real del fichero</span>
+<span class="c">stat /etc/hostname</span>       <span class="com"># tipo, inodo y permisos</span>
+<span class="c">tree -d /etc</span>             <span class="com"># solo directorios, en jerarquía</span>
+<span class="c">cd /var/log</span>              <span class="com"># los registros del sistema</span>
+<span class="c">ls /opt /srv</span>             <span class="com"># software opcional y datos servidos</span>
+<span class="c">ls /sys/class/net</span>        <span class="com"># interfaces vistas por el núcleo</span></div>
+</section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+</script></body></html>

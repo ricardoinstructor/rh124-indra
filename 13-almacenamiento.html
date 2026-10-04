@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>13 · Del bloque al archivo</title><style>
+:root{--rojo:#EE0000;--rojo-d:#B30000;--tinta:#151515;--gris:#f5f5f5;--azul:#004080;--ok:#3E9B4F;--amarillo:#F0AB00;--grisb:#c8c8c8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--gris);color:var(--tinta);line-height:1.45}
+header{background:var(--tinta);color:#fff;border-bottom:6px solid var(--rojo)}
+.bar{max-width:1080px;margin:auto;display:flex;gap:14px;align-items:center;padding:14px 20px;flex-wrap:wrap}
+.back{color:#fff;text-decoration:none;background:#333;padding:8px 12px;border-radius:8px;font-size:.85rem}
+.num{background:var(--rojo);font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:20px;letter-spacing:.06em}
+h1{font-size:1.15rem;margin:2px 0 0}
+main{max-width:1080px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.panel{background:#fff;border:1px solid #ddd;border-top:5px solid var(--rojo);border-radius:12px;padding:16px 18px}
+.panel h2{font-size:1rem;margin:0 0 12px}
+.panel h2 small{font-weight:400;color:#666;font-size:.85rem}
+.btn{background:var(--rojo);color:#fff;border:0;padding:9px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn.sec{background:#333}
+.btn:hover{background:var(--rojo-d)}
+.chuleta{background:#0e0e0e;color:#d6ffd6;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre}
+.c{color:#7CFC98}.o{color:#F0AB00}.com{color:#8a8a8a}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid #ddd;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+code{background:#111;color:#7CFC98;padding:1px 5px;border-radius:5px;font-family:ui-monospace,monospace;font-size:.85em}
+svg{width:100%;height:auto;display:block}
+.leyenda{font-size:.85rem;color:#555}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:#666}
+</style></head><body>
+<header><div class="bar"><a class="back" href="index.html">← Índice</a><div><span class="num">13 · UNIDAD 14</span><h1>Del bloque de disco al archivo abierto</h1></div></div></header>
+<main>
+
+<section class="panel">
+  <h2>Del hardware al archivo abierto <small>cinco niveles, de arriba abajo</small></h2>
+  <svg viewBox="0 0 800 600" role="img" aria-label="Cinco niveles: hardware, sistema de archivos, montaje, rutas y apertura del archivo">
+    <defs>
+      <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#EE0000"/>
+      </marker>
+    </defs>
+
+    <g stroke="#EE0000" stroke-width="2" fill="none" marker-end="url(#f)">
+      <path d="M400 130 V160"/>
+      <path d="M400 240 V270"/>
+      <path d="M400 350 V380"/>
+      <path d="M400 460 V490"/>
+    </g>
+    <g font-size="11" fill="#EE0000" text-anchor="start" font-weight="700">
+      <rect x="410" y="139" width="148" height="16" rx="3" fill="#fff"/>
+      <text x="414" y="151">se formatea el bloque</text>
+      <rect x="410" y="249" width="162" height="16" rx="3" fill="#fff"/>
+      <text x="414" y="261">se monta en un directorio</text>
+      <rect x="410" y="359" width="132" height="16" rx="3" fill="#fff"/>
+      <text x="414" y="371">se resuelve la ruta</text>
+      <rect x="410" y="469" width="150" height="16" rx="3" fill="#fff"/>
+      <text x="414" y="481">se comprueban permisos</text>
+    </g>
+
+    <g id="n1">
+      <rect x="30" y="40" width="740" height="90" rx="10" fill="#F0AB00"/>
+      <circle cx="80" cy="85" r="26" fill="#151515"/>
+      <circle cx="80" cy="85" r="6" fill="#F0AB00"/>
+      <text x="80" y="122" font-size="9" fill="#151515" text-anchor="middle">disco</text>
+      <text x="130" y="70" font-size="14" font-weight="700" fill="#151515">1 · Hardware: disco y particiones</text>
+      <text x="130" y="92" font-size="11" fill="#151515">/dev/sda con particiones /dev/sda1, /dev/sda2</text>
+      <text x="130" y="112" font-size="11" fill="#555">unidades de bloque direccionadas por el kernel</text>
+    </g>
+
+    <g id="n2">
+      <rect x="30" y="160" width="740" height="80" rx="10" fill="#151515"/>
+      <rect x="60" y="180" width="40" height="40" rx="6" fill="#F0AB00"/>
+      <line x1="80" y1="180" x2="80" y2="220" stroke="#151515" stroke-width="3"/>
+      <text x="130" y="188" font-size="14" font-weight="700" fill="#fff">2 · Sistema de archivos XFS o ext4</text>
+      <text x="130" y="210" font-size="11" fill="#d6ffd6">organiza los bloques en archivos y directorios con sus metadatos</text>
+      <text x="130" y="228" font-size="11" fill="#8a8a8a">la estructura se crea con mkfs.xfs o mkfs.ext4</text>
+    </g>
+
+    <g id="n3">
+      <rect x="30" y="270" width="740" height="80" rx="10" fill="#151515"/>
+      <g fill="none" stroke="#F0AB00" stroke-width="3">
+        <circle cx="72" cy="300" r="12"/>
+      </g>
+      <g fill="#F0AB00">
+        <rect x="68" y="292" width="8" height="4"/>
+        <rect x="68" y="298" width="8" height="4"/>
+        <rect x="68" y="304" width="8" height="4"/>
+      </g>
+      <text x="130" y="298" font-size="14" font-weight="700" fill="#fff">3 · Montaje sobre el árbol FHS</text>
+      <text x="130" y="320" font-size="11" fill="#d6ffd6">el sistema de archivos aparece en un punto de montaje del árbol</text>
+      <text x="130" y="338" font-size="11" fill="#8a8a8a">todo lo que hay por debajo pertenece a ese disco</text>
+    </g>
+
+    <g id="n4">
+      <rect x="30" y="380" width="740" height="80" rx="10" fill="#004080"/>
+      <path d="M56 402 h40 v28 h-40 z" fill="#fff"/>
+      <path d="M56 402 h14 v8 h-14 z" fill="#F0AB00"/>
+      <text x="130" y="408" font-size="14" font-weight="700" fill="#fff">4 · Rutas: del dispositivo a la ruta absoluta</text>
+      <text x="130" y="430" font-size="11" fill="#d6ffd6">/dev/sda1 → punto de montaje /var → ruta /var/log</text>
+      <text x="130" y="448" font-size="11" fill="#9fc6e8">la ruta no contiene el nombre del disco: es única en el árbol</text>
+    </g>
+
+
+    <g id="n5">
+      <rect x="30" y="490" width="740" height="80" rx="10" fill="#004080"/>
+      <circle cx="80" cy="530" r="16" fill="#fff"/>
+      <path d="M56 566 q24 -26 48 0 z" fill="#F0AB00"/>
+      <text x="130" y="518" font-size="14" font-weight="700" fill="#fff">5 · El usuario abre /var/log/messages</text>
+      <text x="130" y="540" font-size="11" fill="#d6ffd6">el kernel resuelve la ruta, busca el inodo y comprueba sus permisos</text>
+      <text x="130" y="558" font-size="11" fill="#9fc6e8">propietario, grupo y modo rwx deciden si la apertura tiene éxito</text>
+    </g>
+  </svg>
+  <p><button class="btn" id="btn">Recorrer los 5 niveles</button>
+  <span class="leyenda" id="out" style="margin-left:10px">Nivel: pendiente</span></p>
+</section>
+
+<section class="panel">
+  <h2>Órdenes de consulta del almacenamiento</h2>
+  <table>
+    <tr><th>Orden</th><th>Qué muestra</th></tr>
+    <tr><td><code>mount</code></td><td>Sistemas de archivos montados y su punto de montaje</td></tr>
+    <tr><td><code>lsblk</code></td><td>Árbol de discos, particiones, sistema de archivos y punto de montaje</td></tr>
+    <tr><td><code>findmnt</code></td><td>Tabla de montajes con origen, destino y opciones</td></tr>
+    <tr><td><code>df -h</code></td><td>Espacio usado y disponible en cada sistema de archivos</td></tr>
+    <tr><td><code>blkid</code></td><td>Identificadores de discos: UUID, tipo de sistema de archivos y etiqueta</td></tr>
+  </table>
+  <h2 style="margin-top:16px"><code>/etc/fstab</code> <small>montajes declarados en el arranque</small></h2>
+  <table>
+    <tr><th>Dispositivo</th><th>Punto de montaje</th><th>Tipo</th><th>Opciones</th><th>Dump · fsck</th></tr>
+    <tr><td><code>UUID=8f2a…c14</code></td><td><code>/var</code></td><td><code>xfs</code></td><td><code>defaults,noatime</code></td><td><code>0 2</code></td></tr>
+  </table>
+  <p class="leyenda" style="margin-top:10px">La quinta columna indica si se hace copia de seguridad (<code>dump</code>) y el orden de verificación del sistema de archivos (<code>fsck</code>).</p>
+</section>
+
+<section class="panel">
+  <h2>Chuleta de comandos</h2>
+  <div class="chuleta"><span class="c">lsblk -f</span>                               <span class="com"># árbol de discos con UUID y tipo</span>
+<span class="c">findmnt /var</span>                             <span class="com"># qué punto de montaje sirve esa ruta</span>
+<span class="c">findmnt -no SOURCE /var/log</span>              <span class="com"># dispositivo origen de una ruta</span>
+<span class="c">mount | column -t</span>                       <span class="com"># montajes en columnas legibles</span>
+<span class="c">df -hT /var</span>                            <span class="com"># espacio y tipo del sistema de archivos</span>
+<span class="c">blkid /dev/sda1</span>                        <span class="com"># UUID, tipo y etiqueta del bloque</span>
+<span class="c">stat /var/log/messages</span>                 <span class="com"># inodo, propietario y modo del archivo</span>
+<span class="c">systemctl daemon-reload &amp;&amp; mount -a</span>    <span class="com"># aplica los cambios de /etc/fstab</span></div>
+</section>
+</main>
+<footer>Material didáctico · Administración de sistemas Enterprise Linux I · Sin marcas registradas</footer>
+<script>
+  var niveles = [
+    'Nivel 1 — Hardware: el kernel expone /dev/sda y sus particiones como dispositivos de bloque.',
+    'Nivel 2 — Sistema de archivos: XFS o ext4 organiza los bloques del dispositivo en archivos.',
+    'Nivel 3 — Montaje: el sistema de archivos se incorpora al árbol en un punto de montaje.',
+    'Nivel 4 — Rutas: /dev/sda1 se alcanza como /var/log a través de los directorios intermedios.',
+    'Nivel 5 — Archivo abierto: el kernel resuelve el inodo de /var/log/messages y aplica sus permisos.'
+  ];
+  var i = 0;
+  document.getElementById('btn').addEventListener('click', function () {
+    for (var k = 1; k <= 5; k++) {
+      document.getElementById('n' + k).setAttribute('opacity', k === i + 1 ? '1' : '0.35');
+    }
+    document.getElementById('out').textContent = niveles[i];
+    i = (i + 1) % 5;
+  });
+</script></body></html>
