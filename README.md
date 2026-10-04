@@ -8,12 +8,12 @@ Elaboración propia de apoyo didáctico para el curso
 
 - **Apps visuales (`index.html` + 01–18):** 17 mini-apps, un concepto por app con un solo diagrama.
   Se abren sin conexión y también desde GitHub Pages:
-  `https://furichies.github.io/rh124-indra/`
+  👉 [https://furichies.github.io/rh124-indra/](https://furichies.github.io/rh124-indra/)
 - **`presentacion_RH124_Indra.pdf`:** presentación del curso (datos, orientación por días y trainer).
 
 ## Uso en clase
 
-1. Abrir `https://furichies.github.io/rh124-indra/` en el navegador.
+1. Abrir [https://furichies.github.io/rh124-indra/](https://furichies.github.io/rh124-indra/) en el navegador.
 2. Seguir el índice (3 columnas) por unidades 1–19.
 3. Cada app: diagrama → tabla corta → chuleta de comandos RHEL 10.
 
